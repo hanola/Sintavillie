@@ -16,7 +16,10 @@
 
 package no.olav.samples.facedetect;
 
+import org.opencv.samples.facedetect.FdActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -133,7 +136,9 @@ public class MainActivity extends BaseGameActivity
      */
     void startGame(boolean hardMode) {
         mHardMode = hardMode;
-        switchToFragment(mGameplayFragment);
+        Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
+  	  startActivity(l1);
+        //switchToFragment(mGameplayFragment);
     }
 
     /**
