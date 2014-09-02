@@ -10,7 +10,7 @@
     
     <application
         android:label="@string/app_name"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme" >
 
         <meta-data android:name="com.google.android.gms.games.APP_ID"
@@ -23,7 +23,9 @@
                   android:label="@string/app_name"
                   android:screenOrientation="landscape"
                   android:configChanges="keyboardHidden|orientation">
-            
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.olav.samples.facedetect.MainActivity" />
         </activity>
         
         <activity
