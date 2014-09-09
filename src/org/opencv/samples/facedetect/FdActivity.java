@@ -14,6 +14,7 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -33,6 +34,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private static final String    TAG                 = "OCVSample::Activity";
     private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
+    private static final Scalar   EYE_RECT_COLOR       = new Scalar(255,0, 0, 255);
     public static final int        JAVA_DETECTOR       = 0;
     public static final int        NATIVE_DETECTOR     = 1;
 
@@ -41,11 +43,13 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     private MenuItem               mItemFace30;
     private MenuItem               mItemFace20;
     private MenuItem               mItemType;
-
+    private Mat					   ROI;
     private Mat                    mRgba;
     private Mat                    mGray;
-    private File                   mCascadeFile;
+    private File                   mCascadeFile, mEyeFile, mSmileFile;
     private CascadeClassifier      mJavaDetector;
+    private CascadeClassifier 	   mSmileDetector;
+    private CascadeClassifier 	   mEyeDetector;
     private DetectionBasedTracker  mNativeDetector;
 
     private int                    mDetectorType       = JAVA_DETECTOR;
@@ -53,8 +57,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private float                  mRelativeFaceSize   = 0.2f;
     private int                    mAbsoluteFaceSize   = 0;
-
+    private Rect 				  mouth = new Rect();
     private CameraBridgeViewBase   mOpenCvCameraView;
+    
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -69,7 +74,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
                     try {
                         // load cascade file from application resources
-                        InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+                       /* InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
                         mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
                         FileOutputStream os = new FileOutputStream(mCascadeFile);
@@ -81,17 +86,96 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                         }
                         is.close();
                         os.close();
-
+*/
+                     // ------------------------------------------------------------------------------------------------------
+                        
+                    	InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
+                        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+                        mCascadeFile = new File(cascadeDir, "haarcascade_frontalface_alt.xml");            
+                        FileOutputStream os = new FileOutputStream(mCascadeFile);
+                        
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = is.read(buffer)) != -1) {
+                            os.write(buffer, 0, bytesRead);
+                        }
+                        is.close();
+                        os.close();
+                       
                         mJavaDetector = new CascadeClassifier(mCascadeFile.getAbsolutePath());
                         if (mJavaDetector.empty()) {
-                            Log.e(TAG, "Failed to load cascade classifier");
+                            Log.e(TAG, "Failed to load face cascade classifier");
                             mJavaDetector = null;
                         } else
+                        {
                             Log.i(TAG, "Loaded cascade classifier from " + mCascadeFile.getAbsolutePath());
+                        }
+
+                    	
+                    	
+                        // --------------------------------- load smile classificator ------------------------------------
+                           InputStream smile = getResources().openRawResource(R.raw.haarcascade_smile);
+                           File smileDir = getDir("cascadesmile", Context.MODE_PRIVATE);
+                           mSmileFile = new File(smileDir, "haarcascade_smile.xml");
+                           FileOutputStream oses = new FileOutputStream(mSmileFile);
+
+                           byte[] bufferES = new byte[4096];
+                           int bytesReadES;
+                           while ((bytesReadES = smile.read(bufferES)) != -1) {
+                               oses.write(bufferES, 0, bytesReadES);
+                           }
+                           smile.close();
+                           oses.close();
+                           
+                           mSmileDetector = new CascadeClassifier(mSmileFile.getAbsolutePath());
+                           
+                           if (mSmileDetector.empty()) {
+                               Log.e(TAG, "Failed to load smile cascade classifier");
+                               mSmileDetector = null;
+                           } else
+                           {
+                               Log.i(TAG, "Loaded smile cascade classifier from " + mSmileFile.getAbsolutePath());
+                           }
+                           // ------------------------------------------------------------------------------------------------------
+                        
+                           
+                           // ------------------------------------------------------------------------------------------------------
+                           
+                           // --------------------------------- load eye classificator ------------------------------------
+                           InputStream eye=getResources().openRawResource(R.raw.haarcascade_eye_tree_eyeglasses);
+                           File eyeDir=getDir("cascadeeye", Context.MODE_PRIVATE);
+                           mEyeFile=new File(eyeDir, "haarcascade_eye_tree_eyeglasses.xml");
+                           FileOutputStream os1 = new FileOutputStream(mEyeFile);
+                          
+                           byte[] buffer1 = new byte[4096];
+                           int bytesRead1;
+                           while ((bytesRead1 = eye.read(buffer1)) != -1) {
+                               os1.write(buffer1, 0, bytesRead1);
+                           }
+                           eye.close();
+                           os1.close();
+                           
+                           mEyeDetector = new CascadeClassifier(mEyeFile.getAbsolutePath());
+                           if (mEyeDetector.empty()) {
+                               Log.e(TAG, "Failed to load eye cascade classifier");
+                               mEyeDetector = null;
+                           } else
+                           {
+                               Log.i(TAG, "Loaded eye cascade classifier from " + mEyeFile.getAbsolutePath());
+                           }
+                              // ------------------------------------------------------------------------------------------------------
+                           
+                       
+                        
+                        
+                        
+                     
 
                         mNativeDetector = new DetectionBasedTracker(mCascadeFile.getAbsolutePath(), 0);
 
                         cascadeDir.delete();
+                        smileDir.delete();
+                        eyeDir.delete();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -173,26 +257,74 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         }
 
         MatOfRect faces = new MatOfRect();
+        MatOfRect eyes = new MatOfRect();
 
-        if (mDetectorType == JAVA_DETECTOR) {
-            if (mJavaDetector != null)
-                mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                        new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+        if (mDetectorType == JAVA_DETECTOR)
+        {
+        	if (mJavaDetector != null)
+                mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2 // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+                        , new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
         }
-        else if (mDetectorType == NATIVE_DETECTOR) {
-            if (mNativeDetector != null)
-                mNativeDetector.detect(mGray, faces);
+        else if (mDetectorType == NATIVE_DETECTOR)
+        {
+        	if (mNativeDetector != null)
+        		mNativeDetector.detect(mGray, faces);
         }
-        else {
-            Log.e(TAG, "Detection method is not selected!");
+        else
+        {
+        	Log.e(TAG, "Detection method is not selected!");
         }
-
+        
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
             Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
-
+       
+        if(facesArray.length>0)
+        {
+        	
+        	//Rect roi = new Rect((int)facesArray[0].tl().x,(int)facesArray[0].tl().y,facesArray[0].width,facesArray[0].height);
+        	//Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y+facesArray[0].height/5),facesArray[0].width,(int)(facesArray[0].height/3));//imran
+        	Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y),facesArray[0].width,(int)(facesArray[0].height));//imran
+        	//taking inputs from nustrat opencv example
+        	//imran check above, using tl of x and tl of y.other wise it will give runtime errors
+        	Mat cropped = new Mat();
+        	//cropped = mGray.submat(facesArray[0]);//imran yuppie!, this did the trick!...everything else was failing
+        	//refer to opencv 2.4 tut pdf
+        	cropped = mGray.submat(roi);
+        	//cropped.copyTo(mGray.submat(roi));
+        	if (mEyeDetector != null)
+        	mEyeDetector.detectMultiScale(cropped, eyes, 1.1,2,2,new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+        	else
+        	Log.i("Fdvuew","mEyeDetector is NULL");
+        	
+        Rect[] eyesArray;
+        eyesArray = eyes.toArray();
+        Log.i("Fdvuew","Eyes Count"+eyesArray.length);
+        Point x1=new Point();
+        //using opencv tutorials for circle, its working fine now.
+        
+        for (int i = 0; i < eyesArray.length; i++)
+        {
+           
+        	x1.x=facesArray[0].x + eyesArray[i].x + eyesArray[i].width*0.5;
+        	x1.y=facesArray[0].y + eyesArray[i].y + eyesArray[i].height*0.5;
+        	int Radius=(int)((eyesArray[i].width + eyesArray[i].height)*0.25 );
+        	Core.circle(mRgba, x1, Radius, EYE_RECT_COLOR);
+        	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
+        	
+        	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3);
+        	//x1.x=eyesArray[i].tl().x + facesArray[0].width;
+        	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
+        	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
+        }
+        }
+            
+       
+        
+        
         return mRgba;
-    }
+       
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -243,3 +375,26 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         }
     }
 }
+
+/*
+//Smile Detector classifier load TODO:make ROI so the detector is more efficient
+if (mDetectorType == JAVA_DETECTOR) {
+    if (mSmileDetector!= null)
+    	mSmileDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
+                new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+    
+    //inserted from fdview ----------------------------------------------------------
+    
+    Rect[] facesArray = faces.toArray();
+    for (int i = 0; i < facesArray.length; i++){
+     	Rect r = facesArray[i];
+         Core.rectangle(mGray, r.tl(), r.br(), new Scalar(0, 255, 0, 255), 3);
+         Core.rectangle(mRgba, r.tl(), r.br(), new Scalar(0, 255, 0, 255), 3);
+    
+    //inserts the rectangle ROI for mouth 
+    mouth = new Rect(r.x + r.width/12, (int)(r.y+(r.height/1.6)),r.width - 2*r.width/12,(int)(r.height/3));
+    Core.rectangle(mRgba, mouth.tl(), mouth.br(), new Scalar(255,0, 150, 150), 2);
+    //--------------------------------------------
+
+
+*/

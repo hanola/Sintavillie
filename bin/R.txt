@@ -154,7 +154,10 @@ int layout face_detect_surface_view 0x7f030001
 int layout fragment_gameplay 0x7f030002
 int layout fragment_mainmenu 0x7f030003
 int layout fragment_win 0x7f030004
-int raw lbpcascade_frontalface 0x7f040000
+int raw haarcascade_eye_tree_eyeglasses 0x7f040000
+int raw haarcascade_frontalface_alt 0x7f040001
+int raw haarcascade_smile 0x7f040002
+int raw lbpcascade_frontalface 0x7f040003
 int string achievement 0x7f070034
 int string achievement_arrogant 0x7f070023
 int string achievement_arrogant_toast_text 0x7f070031
