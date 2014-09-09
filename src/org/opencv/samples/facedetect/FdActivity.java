@@ -57,8 +57,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private float                  mRelativeFaceSize   = 0.2f;
     private int                    mAbsoluteFaceSize   = 0;
-    private Rect 				  mouth = new Rect();
+    private Rect 				   mouth = new Rect();
     private CameraBridgeViewBase   mOpenCvCameraView;
+    private int                    gameScore           =0;
     
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
@@ -180,6 +181,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                     } catch (IOException e) {
                         e.printStackTrace();
                         Log.e(TAG, "Failed to load cascade. Exception thrown: " + e);
+                       
                     }
 
                     mOpenCvCameraView.enableView();
@@ -244,7 +246,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-
+    	
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
 
@@ -258,6 +260,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         MatOfRect faces = new MatOfRect();
         MatOfRect eyes = new MatOfRect();
+        MatOfRect mouth = new MatOfRect();
 
         if (mDetectorType == JAVA_DETECTOR)
         {
@@ -284,6 +287,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         	
         	//Rect roi = new Rect((int)facesArray[0].tl().x,(int)facesArray[0].tl().y,facesArray[0].width,facesArray[0].height);
         	//Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y+facesArray[0].height/5),facesArray[0].width,(int)(facesArray[0].height/3));//imran
+        	
+        	
+        	//making roi from face image
         	Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y),facesArray[0].width,(int)(facesArray[0].height));//imran
         	//taking inputs from nustrat opencv example
         	//imran check above, using tl of x and tl of y.other wise it will give runtime errors
@@ -292,6 +298,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         	//refer to opencv 2.4 tut pdf
         	cropped = mGray.submat(roi);
         	//cropped.copyTo(mGray.submat(roi));
+        	
+       /* 	
         	if (mEyeDetector != null)
         	mEyeDetector.detectMultiScale(cropped, eyes, 1.1,2,2,new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
         	else
@@ -317,8 +325,43 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
         	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
         }
+        */
+     	
+    	if (mSmileDetector != null)
+    		mSmileDetector.detectMultiScale(cropped, mouth, 1.1,2,2,new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+    	else
+    	Log.i("Fdvuew","mSmileDetector is NULL");
+    	
+    Rect[] mouthArray;
+    mouthArray = mouth.toArray();
+    Log.i("Fdvuew","Smile Count"+mouthArray.length);
+    Point x2=new Point();
+    //using opencv tutorials for circle, its working fine now.
+    
+    for (int i = 0; i < mouthArray.length; i++)
+    {
+       
+    	x2.x=facesArray[0].x + mouthArray[i].x + mouthArray[i].width*0.5;
+    	x2.y=facesArray[0].y + mouthArray[i].y + mouthArray[i].height*0.5;
+    	int Radius=(int)((mouthArray[i].width + mouthArray[i].height)*0.25 );
+    	Core.circle(mRgba, x2, Radius, EYE_RECT_COLOR);
+    	Core.putText(mRgba, "Smiling", x2, 2, 3.3 , EYE_RECT_COLOR);
+    	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
+    	
+    	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3);
+    	//x1.x=eyesArray[i].tl().x + facesArray[0].width;
+    	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
+    	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
+    	
+    	gameScore = gameScore+1;
+    	Log.i("Score","Game Score  "+gameScore);
+    }
+        
+        
         }
             
+       
+       
        
         
         
