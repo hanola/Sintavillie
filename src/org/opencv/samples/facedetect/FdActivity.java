@@ -291,6 +291,13 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         	
         	//making roi from face image
         	Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y),facesArray[0].width,(int)(facesArray[0].height));//imran
+        	 //inserts the rectangle ROI for mouth 
+        	
+        	//testing smaller ROI
+            Rect mouth2 = new Rect(facesArray[0].x + facesArray[0].width/12, (int)(facesArray[0].y+(facesArray[0].height/1.6)),facesArray[0].width - 2*facesArray[0].width/12,(int)(facesArray[0].height/3));
+            Core.rectangle(mRgba, mouth2.tl(), mouth2.br(), new Scalar(255,0, 150, 150), 2);
+            //--------------------------------------------
+            
         	//taking inputs from nustrat opencv example
         	//imran check above, using tl of x and tl of y.other wise it will give runtime errors
         	Mat cropped = new Mat();
