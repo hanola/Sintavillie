@@ -24,6 +24,7 @@ import org.opencv.objdetect.CascadeClassifier;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -280,7 +281,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
-            Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+            //Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
        
         if(facesArray.length>0)
         {
@@ -295,7 +296,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         	
         	//testing smaller ROI
             Rect mouth2 = new Rect(facesArray[0].x + facesArray[0].width/12, (int)(facesArray[0].y+(facesArray[0].height/1.6)),facesArray[0].width - 2*facesArray[0].width/12,(int)(facesArray[0].height/3));
-            Core.rectangle(mRgba, mouth2.tl(), mouth2.br(), new Scalar(255,0, 150, 150), 2);
+            //Core.rectangle(mRgba, mouth2.tl(), mouth2.br(), new Scalar(255,0, 150, 150), 2);
             //--------------------------------------------
             
         	//taking inputs from nustrat opencv example
@@ -303,7 +304,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         	Mat cropped = new Mat();
         	//cropped = mGray.submat(facesArray[0]);//imran yuppie!, this did the trick!...everything else was failing
         	//refer to opencv 2.4 tut pdf
-        	cropped = mGray.submat(roi);
+        	//cropped = mGray.submat(roi);
+        	cropped = mGray.submat(mouth2);
         	//cropped.copyTo(mGray.submat(roi));
         	
        /* 	
@@ -345,23 +347,27 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     Point x2=new Point();
     //using opencv tutorials for circle, its working fine now.
     
-    for (int i = 0; i < mouthArray.length; i++)
+    for (int j = 0; j < mouthArray.length; j++)
     {
        
-    	x2.x=facesArray[0].x + mouthArray[i].x + mouthArray[i].width*0.5;
-    	x2.y=facesArray[0].y + mouthArray[i].y + mouthArray[i].height*0.5;
-    	int Radius=(int)((mouthArray[i].width + mouthArray[i].height)*0.25 );
-    	Core.circle(mRgba, x2, Radius, EYE_RECT_COLOR);
-    	Core.putText(mRgba, "Smiling", x2, 2, 3.3 , EYE_RECT_COLOR);
+    	x2.x=facesArray[0].x + mouthArray[j].x + mouthArray[j].width*0.5;
+    	x2.y=facesArray[0].y + mouthArray[j].y + mouthArray[j].height*0.5;
+    	int Radius=(int)((mouthArray[j].width + mouthArray[j].height)*0.25 );
+    	//Core.circle(mRgba, x2, Radius, EYE_RECT_COLOR);
+    	Core.putText(mRgba, "Smiling", x2, 2, 4 , EYE_RECT_COLOR);
     	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
     	
-    	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3);
+    	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3); TODO: check i or j variable in for 
     	//x1.x=eyesArray[i].tl().x + facesArray[0].width;
     	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
     	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
     	
     	gameScore = gameScore+1;
     	Log.i("Score","Game Score  "+gameScore);
+    	if (gameScore == 100){
+    		Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
+    	  	  startActivity(l1);
+    	}
     }
         
         
