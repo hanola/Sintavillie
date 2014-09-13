@@ -59,6 +59,8 @@ int color wallet_holo_blue_light 0x7f060015
 int color wallet_link_text_light 0x7f060016
 int color wallet_primary_text_holo_light 0x7f060019
 int color wallet_secondary_text_holo_dark 0x7f06001a
+int dimen activity_horizontal_margin 0x7f0a0000
+int dimen activity_vertical_margin 0x7f0a0001
 int drawable common_signin_btn_icon_dark 0x7f020000
 int drawable common_signin_btn_icon_disabled_dark 0x7f020001
 int drawable common_signin_btn_icon_disabled_focus_dark 0x7f020002

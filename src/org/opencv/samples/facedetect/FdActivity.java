@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import no.olav.samples.facedetect.R;
 
@@ -29,7 +30,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class FdActivity extends Activity implements CvCameraViewListener2 {
 
@@ -61,7 +65,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     private Rect 				   mouth = new Rect();
     private CameraBridgeViewBase   mOpenCvCameraView;
     private int                    gameScore           =0;
-    
+    private Button 							learnbutton;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -214,6 +218,18 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setCvCameraViewListener(this);
+        //learnbutton = new Button(getApplicationContext());
+        //ArrayList<View> views = new ArrayList<View>();
+        //views.add(findViewById(R.id.digit_button_0));
+        //learnbutton=(Button)findViewById(R.id.digit_button_0); 
+        /*mOpenCvCameraView.addTouchables(views);
+        mOpenCvCameraView.enableFpsMeter();
+        final Button button = (Button) findViewById(R.id.digit_button_0);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+            }
+        });*/
     }
 
     @Override
@@ -344,6 +360,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     Rect[] mouthArray;
     mouthArray = mouth.toArray();
     Log.i("Fdvuew","Smile Count"+mouthArray.length);
+    
     Point x2=new Point();
     //using opencv tutorials for circle, its working fine now.
     
@@ -354,7 +371,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     	x2.y=facesArray[0].y + mouthArray[j].y + mouthArray[j].height*0.5;
     	int Radius=(int)((mouthArray[j].width + mouthArray[j].height)*0.25 );
     	//Core.circle(mRgba, x2, Radius, EYE_RECT_COLOR);
-    	Core.putText(mRgba, "Smiling", x2, 2, 4 , EYE_RECT_COLOR);
+    	//Core.putText(mRgba, "Smiling", x2, 2, 4 , EYE_RECT_COLOR);
     	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
     	
     	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3); TODO: check i or j variable in for 
@@ -363,7 +380,36 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
     	
     	gameScore = gameScore+1;
+    	String Score = Integer.toString(gameScore);
+    	Log.i("Score" , "String Score    "+Score);
     	Log.i("Score","Game Score  "+gameScore);
+    	Core.putText(mRgba, "Score  " +Score, x2, 2, 4 , EYE_RECT_COLOR);
+    
+    	//running in new thread to work
+    	if (gameScore == 20){
+    		runOnUiThread(new Runnable() {
+
+    			public void run() {
+
+    			  Toast.makeText(getApplicationContext(), "You have a toast ready", Toast.LENGTH_LONG).show();
+
+    			   }
+    			});
+    	}
+    	
+    	//running in new thread to work
+    	if (gameScore == 50){
+    		runOnUiThread(new Runnable() {
+
+    			public void run() {
+
+    			  Toast.makeText(getApplicationContext(), "You are in on the run", Toast.LENGTH_LONG).show();
+
+    			   }
+    			});
+    	}
+    	
+    	
     	if (gameScore == 100){
     		Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
     	  	  startActivity(l1);
