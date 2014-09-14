@@ -96,7 +96,7 @@ public class GameplayFragment extends Fragment implements OnClickListener {
             updateUi();
             break;
         case R.id.ok_score_button:
-            mListener.onEnteredScore(mRequestedScore);
+            mListener.onEnteredScore(mRequestedScore); //TODO use in my game to set new highScore
             break;
         }
     }

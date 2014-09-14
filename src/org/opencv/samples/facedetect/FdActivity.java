@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import no.olav.samples.facedetect.R;
 
@@ -43,6 +44,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     public static final int        JAVA_DETECTOR       = 0;
     public static final int        NATIVE_DETECTOR     = 1;
 
+    
     private MenuItem               mItemFace50;
     private MenuItem               mItemFace40;
     private MenuItem               mItemFace30;
@@ -59,7 +61,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private int                    mDetectorType       = JAVA_DETECTOR;
     private String[]               mDetectorName;
-
+    private long 				   startTime		   =System.currentTimeMillis();;
+    private long 				   stopTime		   =System.currentTimeMillis();;
+    
     private float                  mRelativeFaceSize   = 0.2f;
     private int                    mAbsoluteFaceSize   = 0;
     private Rect 				   mouth = new Rect();
@@ -351,7 +355,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
         }
         */
-     	
+        	
+        	
     	if (mSmileDetector != null)
     		mSmileDetector.detectMultiScale(cropped, mouth, 1.1,2,2,new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
     	else
@@ -364,9 +369,11 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     Point x2=new Point();
     //using opencv tutorials for circle, its working fine now.
     
+    
+    
     for (int j = 0; j < mouthArray.length; j++)
     {
-       
+      
     	x2.x=facesArray[0].x + mouthArray[j].x + mouthArray[j].width*0.5;
     	x2.y=facesArray[0].y + mouthArray[j].y + mouthArray[j].height*0.5;
     	int Radius=(int)((mouthArray[j].width + mouthArray[j].height)*0.25 );
@@ -384,7 +391,14 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     	Log.i("Score" , "String Score    "+Score);
     	Log.i("Score","Game Score  "+gameScore);
     	Core.putText(mRgba, "Score  " +Score, x2, 2, 4 , EYE_RECT_COLOR);
-    
+    	
+    	
+    	if (gameScore == 1){
+    		startTime = System.currentTimeMillis();
+        	Log.i("timeScore" , "StartTime    "+startTime);
+    	}
+    	
+    	
     	//running in new thread to work
     	if (gameScore == 20){
     		runOnUiThread(new Runnable() {
@@ -399,6 +413,13 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     	
     	//running in new thread to work
     	if (gameScore == 50){
+    		stopTime = System.currentTimeMillis();
+        	Log.i("timeScore" , "StopTime    "+stopTime);
+        	long sumTime = stopTime - startTime;
+        	long secTime = sumTime /1000 % 60;
+        	Log.i("timeScore" , "Time used    "+sumTime);
+        	Log.i("timeScore" , "Time used sec    "+secTime);
+        
     		runOnUiThread(new Runnable() {
 
     			public void run() {
@@ -410,7 +431,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     	}
     	
     	
-    	if (gameScore == 100){
+    	if (gameScore == 100 ){
     		Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
     	  	  startActivity(l1);
     	}
@@ -422,7 +443,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
        
        
        
-        
+     
         
         return mRgba;
        

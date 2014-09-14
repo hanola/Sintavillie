@@ -177,6 +177,8 @@ public class MainActivity extends BaseGameActivity
         return true;
     }
 
+    
+    //TODO: the one to call for setting score from the gamplay
     @Override
     public void onEnteredScore(int requestedScore) {
         // Compute final score (in easy mode, it's the requested score; in hard mode, it's half)
