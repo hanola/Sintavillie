@@ -25,6 +25,8 @@
   <string name="achievement_humble">CgkIwu3Qp4kGEAIQBA</string>
   <string name="achievement_arrogant">CgkIwu3Qp4kGEAIQBQ</string>
   <string name="achievement_leet">CgkIwu3Qp4kGEAIQBg</string>
+  <string name="achievement_poengsamler">CgkIwu3Qp4kGEAIQCw</string>
+  
   <string name="leaderboard_easy">CgkIwu3Qp4kGEAIQBw</string>
   <string name="leaderboard_hard">CgkIwu3Qp4kGEAIQCA</string>
 </resources>

@@ -72,7 +72,29 @@ public class MainActivity extends BaseGameActivity
         enableDebugLog(ENABLE_DEBUG, TAG);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        Bundle extras = getIntent().getExtras();
+		  if (extras != null) {
+			   String datas= extras.getString("EXTRA_ID");
+			   int mScore = extras.getInt("Game_Score");
+			   int requestedScore = 0;
+			   if (datas!= null) {
+				   Log.i("Score" , "Put String MainAct   "+datas);
+				   Log.i("Score" , "Put int MainAct   "+mScore);
+				   mHardMode = true;
+				   updateLeaderboards(mScore);
+				
+				   // check for achievements
+			        checkForAchievements(requestedScore, mScore);
 
+			        
+
+			        // push those accomplishments to the cloud, if signed in
+			        pushAccomplishments();
+			   }
+		  }
+        
+        
         // create fragments
         mMainMenuFragment = new MainMenuFragment();
         mGameplayFragment = new GameplayFragment();
@@ -141,6 +163,7 @@ public class MainActivity extends BaseGameActivity
         //switchToFragment(mGameplayFragment);
     }
 
+   
     /**
      * Checks that the developer (that's you!) read the instructions.
      *
@@ -235,7 +258,7 @@ public class MainActivity extends BaseGameActivity
             mOutbox.mHumbleAchievement = true;
             achievementToast(getString(R.string.achievement_humble_toast_text));
         }
-        if (finalScore == 1337) {
+        if (finalScore == 150) {
             mOutbox.mLeetAchievement = true;
             achievementToast(getString(R.string.achievement_leet_toast_text));
         }
@@ -408,4 +431,17 @@ public class MainActivity extends BaseGameActivity
     public void onWinScreenSignInClicked() {
         beginUserInitiatedSignIn();
     }
+    
+    public void startFaceDetection(){
+   	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
+    	  startActivity(l1);
+   }
+    
+    public void startTimeDetection(){
+      	 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.WinnerActivity.class);
+       	  startActivity(l1);
+      }
+    
+    
+    
 }

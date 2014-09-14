@@ -1,0 +1,7 @@
+# cache for current jar dependency. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1409677392000 166 22caac275c77c5b3bf0741e80c36593c7950ebd1 /Users/Olav/Documents/master/BaseGameUtils/libs/appcompat_v7.jar
+1409677392000 166 22caac275c77c5b3bf0741e80c36593c7950ebd1 /Users/Olav/Desktop/OpenCV-2.4.5-android-sdk/samples/face-detection/libs/appcompat_v7.jar
+1400521794000 349134 21297ae2bf22a0ce81c9b59992cf0693eec45d5b /Users/Olav/Desktop/OpenCV-2.4.5-android-sdk/samples/face-detection/libs/android-support-v7-appcompat.jar
+1400521794000 349134 21297ae2bf22a0ce81c9b59992cf0693eec45d5b /Users/Olav/Documents/master/BaseGameUtils/libs/android-support-v7-appcompat.jar

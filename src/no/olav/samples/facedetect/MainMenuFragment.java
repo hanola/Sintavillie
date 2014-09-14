@@ -40,6 +40,9 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
         public void onShowLeaderboardsRequested();
         public void onSignInButtonClicked();
         public void onSignOutButtonClicked();
+        public void startFaceDetection();
+        public void startTimeDetection();
+      //  public void startTimedTrial();
     }
 
     Listener mListener = null;
@@ -90,10 +93,10 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
         case R.id.easy_mode_button:
-            mListener.onStartGameRequested(false);
+            mListener.startFaceDetection();
             break;
         case R.id.hard_mode_button:
-            mListener.onStartGameRequested(true);
+            mListener.startTimeDetection();
             break;
         case R.id.show_achievements_button:
             mListener.onShowAchievementsRequested();

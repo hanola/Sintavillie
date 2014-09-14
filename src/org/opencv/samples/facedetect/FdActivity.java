@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import no.olav.samples.facedetect.R;
-
+import no.olav.samples.facedetect.WinFragment;
+import no.olav.samples.facedetect.MainActivity;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
@@ -24,10 +25,13 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.objdetect.CascadeClassifier;
 
+import com.google.example.games.basegameutils.BaseGameActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,14 +40,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class FdActivity extends Activity implements CvCameraViewListener2 {
+public class FdActivity extends FragmentActivity implements CvCameraViewListener2 {
 
     private static final String    TAG                 = "OCVSample::Activity";
     private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
     private static final Scalar   EYE_RECT_COLOR       = new Scalar(255,0, 0, 255);
     public static final int        JAVA_DETECTOR       = 0;
     public static final int        NATIVE_DETECTOR     = 1;
-
+    WinFragment                    WinnerFragment;     
     
     private MenuItem               mItemFace50;
     private MenuItem               mItemFace40;
@@ -405,7 +409,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     			public void run() {
 
-    			  Toast.makeText(getApplicationContext(), "You have a toast ready", Toast.LENGTH_LONG).show();
+    			  Toast.makeText(getApplicationContext(), "Nå er vi igang!", Toast.LENGTH_LONG).show();
 
     			   }
     			});
@@ -424,15 +428,31 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     			public void run() {
 
-    			  Toast.makeText(getApplicationContext(), "You are in on the run", Toast.LENGTH_LONG).show();
+    			  Toast.makeText(getApplicationContext(), "50 smil begynner å ligne på noe!!!", Toast.LENGTH_LONG).show();
 
     			   }
     			});
     	}
     	
+    	if (gameScore == 100){
+    		runOnUiThread(new Runnable() {
+
+    			public void run() {
+
+    			  Toast.makeText(getApplicationContext(), "Bare 50 smil til:)", Toast.LENGTH_LONG).show();
+
+    			   }
+    			});
+    	}
     	
-    	if (gameScore == 100 ){
-    		Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
+    	if (gameScore == 150 ){
+    		//WinnerFragment      =new WinFragment();
+    		//getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, WinnerFragment ).commit();
+    		 Log.i("Score" , "Put intent FdActivity");
+    		
+    		Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.WinnerActivity.class);
+    		l1.putExtra("EXTRA_ID", Score);
+    		l1.putExtra("Game_Score", gameScore);
     	  	  startActivity(l1);
     	}
     }
@@ -497,6 +517,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
             }
         }
     }
+
+	
 }
 
 /*
