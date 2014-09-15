@@ -444,7 +444,7 @@ public class MainActivity extends BaseGameActivity
    }
     
     public void startTimeDetection(){
-      	 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.WinnerActivity.class);
+      	 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.IntroActivity.class);
        	  startActivity(l1);
       }
     

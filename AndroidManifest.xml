@@ -38,14 +38,15 @@
         <activity
             android:name="no.olav.samples.facedetect.WinnerActivity"
             android:label="@string/title_activity_winner"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="no.olav.samples.facedetect..MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="no.olav.samples.facedetect.MainActivity" />
         </activity>
         <activity
             android:name="no.olav.samples.facedetect.IntroActivity"
-            android:label="@string/title_activity_intro" >
+            android:label="@string/title_activity_intro" 
+            android:screenOrientation="portrait" >
            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

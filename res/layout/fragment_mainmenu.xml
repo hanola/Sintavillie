@@ -61,12 +61,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/easy"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp" 
+                android:drawableLeft="@drawable/easy"
+                />
 
             <Button android:id="@+id/hard_mode_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hard" />
+                android:text="@string/hard"
+                android:drawableLeft="@drawable/hard" 
+                />
 
         </LinearLayout>
 
@@ -80,12 +84,16 @@
             android:layout_height="wrap_content"
             android:text="@string/show_achievements"
             android:layout_marginBottom="20dp"
-            android:id="@+id/show_achievements_button" />
+            android:id="@+id/show_achievements_button" 
+            android:drawableLeft="@drawable/achivement" 
+            />
 
         <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_leaderboards"
-            android:id="@+id/show_leaderboards_button" />
+            android:id="@+id/show_leaderboards_button" 
+            android:drawableLeft="@drawable/leaderboard" 
+            />
     </LinearLayout>
 
     <LinearLayout android:id="@+id/sign_in_bar"

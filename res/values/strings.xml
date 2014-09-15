@@ -5,7 +5,7 @@
     <string name="signing_in">Logger på med Google</string>
     <string name="signing_out">Logger ut</string>
     <string name="title_activity_main">Sintavillie</string>
-    <string name="signed_out_greeting">Hei annonym bruker (du er ikke logget inn)!</string>
+    <string name="signed_out_greeting">Du er ikke pålogget!</string>
     <string name="achievements_not_available">Vennligst logg inn for å se prestasjoner.</string>
     <string name="leaderboards_not_available">Vennligst logg inn for å se poengoversikt.</string>
     <string name="easy_mode_explanation">You\'re playing in easy mode, so you got the score you requested! Wasn\'t that easy?</string>
