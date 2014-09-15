@@ -445,7 +445,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     			});
     	}
     	
-    	if (gameScore == 150 ){
+    	if (gameScore == 15 ){
     		//WinnerFragment      =new WinFragment();
     		//getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, WinnerFragment ).commit();
     		 Log.i("Score" , "Put intent FdActivity");

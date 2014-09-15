@@ -19,14 +19,14 @@
     <string name="app_id">208657462978</string>
 
     <!-- TODO: Replace these by your achievement/leaderboard IDs! -->
-    <string name="achievement_prime">CgkIwu3Qp4kGEAIQAQ</string>
-  <string name="achievement_really_bored">CgkIwu3Qp4kGEAIQAg</string>
+  
+  <string name="achievement_prime">CgkIwu3Qp4kGEAIQAQ</string>
+  <string name="achievement_entusiast">CgkIwu3Qp4kGEAIQAg</string>
   <string name="achievement_bored">CgkIwu3Qp4kGEAIQAw</string>
   <string name="achievement_humble">CgkIwu3Qp4kGEAIQBA</string>
   <string name="achievement_arrogant">CgkIwu3Qp4kGEAIQBQ</string>
-  <string name="achievement_leet">CgkIwu3Qp4kGEAIQBg</string>
-  <string name="achievement_poengsamler">CgkIwu3Qp4kGEAIQCw</string>
-  
+  <string name="achievement_poengsamleren">CgkIwu3Qp4kGEAIQBg</string>
   <string name="leaderboard_easy">CgkIwu3Qp4kGEAIQBw</string>
   <string name="leaderboard_hard">CgkIwu3Qp4kGEAIQCA</string>
+
 </resources>

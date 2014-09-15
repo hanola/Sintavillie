@@ -33,11 +33,7 @@
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             
         </activity>
         <activity
             android:name="no.olav.samples.facedetect.WinnerActivity"
@@ -46,6 +42,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="no.olav.samples.facedetect.MainActivity" />
+        </activity>
+        <activity
+            android:name="no.olav.samples.facedetect.IntroActivity"
+            android:label="@string/title_activity_intro" >
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

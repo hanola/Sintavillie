@@ -82,12 +82,13 @@ public class MainActivity extends BaseGameActivity
 				   Log.i("Score" , "Put String MainAct   "+datas);
 				   Log.i("Score" , "Put int MainAct   "+mScore);
 				   mHardMode = true;
-				   updateLeaderboards(mScore);
+				   
 				
 				   // check for achievements
 			        checkForAchievements(requestedScore, mScore);
-
-			        
+                   
+			        //update leaderboards
+			        updateLeaderboards(mScore);
 
 			        // push those accomplishments to the cloud, if signed in
 			        pushAccomplishments();
@@ -187,7 +188,7 @@ public class MainActivity extends BaseGameActivity
         int res_ids[] = new int[] {
                 R.string.app_id, R.string.achievement_arrogant,
                 R.string.achievement_bored, R.string.achievement_humble,
-                R.string.achievement_leet, R.string.achievement_prime,
+                R.string.achievement_entusiast, R.string.achievement_prime,
                 R.string.leaderboard_easy, R.string.leaderboard_hard
         };
         for (int i : res_ids) {
@@ -201,7 +202,7 @@ public class MainActivity extends BaseGameActivity
     }
 
     
-    //TODO: the one to call for setting score from the gamplay
+    
     @Override
     public void onEnteredScore(int requestedScore) {
         // Compute final score (in easy mode, it's the requested score; in hard mode, it's half)
@@ -258,11 +259,12 @@ public class MainActivity extends BaseGameActivity
             mOutbox.mHumbleAchievement = true;
             achievementToast(getString(R.string.achievement_humble_toast_text));
         }
-        if (finalScore == 150) {
-            mOutbox.mLeetAchievement = true;
-            achievementToast(getString(R.string.achievement_leet_toast_text));
+        if (finalScore == 15) {
+            mOutbox.mPoengsamlerenAchivement = true;
+            achievementToast(getString(R.string.achievement_poengsamleren_text));
         }
         mOutbox.mBoredSteps++;
+        Log.i("Score", "BoredSteps   " +mOutbox.mBoredSteps);
     }
 
     void unlockAchievement(int achievementId, String fallbackString) {
@@ -301,13 +303,15 @@ public class MainActivity extends BaseGameActivity
             Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_humble));
             mOutbox.mHumbleAchievement = false;
         }
-        if (mOutbox.mLeetAchievement) {
-            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_leet));
-            mOutbox.mLeetAchievement = false;
+        if (mOutbox.mPoengsamlerenAchivement) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_poengsamleren));
+            
+            mOutbox.mPoengsamlerenAchivement = false;
+            
         }
         if (mOutbox.mBoredSteps > 0) {
-            Games.Achievements.increment(getApiClient(), getString(R.string.achievement_really_bored),
-                    mOutbox.mBoredSteps);
+            Games.Achievements.increment(getApiClient(), getString(R.string.achievement_entusiast), mOutbox.mBoredSteps);
+            
             Games.Achievements.increment(getApiClient(), getString(R.string.achievement_bored),
                     mOutbox.mBoredSteps);
         }
@@ -404,12 +408,14 @@ public class MainActivity extends BaseGameActivity
         boolean mHumbleAchievement = false;
         boolean mLeetAchievement = false;
         boolean mArrogantAchievement = false;
+        boolean mPoengsamlerenAchivement = false;
+        
         int mBoredSteps = 0;
         int mEasyModeScore = -1;
         int mHardModeScore = -1;
 
         boolean isEmpty() {
-            return !mPrimeAchievement && !mHumbleAchievement && !mLeetAchievement &&
+            return !mPrimeAchievement && !mHumbleAchievement && !mPoengsamlerenAchivement &&
                     !mArrogantAchievement && mBoredSteps == 0 && mEasyModeScore < 0 &&
                     mHardModeScore < 0;
         }
