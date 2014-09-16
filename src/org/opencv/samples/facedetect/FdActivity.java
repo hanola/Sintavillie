@@ -10,6 +10,7 @@ import java.util.Calendar;
 import no.olav.samples.facedetect.R;
 import no.olav.samples.facedetect.WinFragment;
 import no.olav.samples.facedetect.MainActivity;
+
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.LoaderCallbackInterface;
@@ -28,16 +29,24 @@ import org.opencv.objdetect.CascadeClassifier;
 import com.google.example.games.basegameutils.BaseGameActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class FdActivity extends FragmentActivity implements CvCameraViewListener2 {
@@ -238,6 +247,12 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
                 // Perform action on click
             }
         });*/
+        
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("Name", "Olav");
+        editor.apply();
     }
 
     @Override
@@ -408,9 +423,24 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     		runOnUiThread(new Runnable() {
 
     			public void run() {
+    				//Toast.makeText(getApplicationContext(), "Nå er vi igang!", Toast.LENGTH_LONG).show();
 
-    			  Toast.makeText(getApplicationContext(), "Nå er vi igang!", Toast.LENGTH_LONG).show();
+    				String message = "Hei på deg:)"; 
+    			  
+    			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG);
+    		        toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
 
+    		        TextView textView = new TextView(getApplicationContext());
+    		        textView.setBackgroundColor(Color.DKGRAY);
+    		        textView.setTextColor(Color.WHITE);
+    		        textView.setTextSize(30);
+    		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
+    		        textView.setTypeface(typeface);
+    		        textView.setPadding(10, 10, 10, 10);
+    		        textView.setText(message);
+
+    		        toast.setView(textView);
+    		        toast.show();
     			   }
     			});
     	}
@@ -424,10 +454,13 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         	Log.i("timeScore" , "Time used    "+sumTime);
         	Log.i("timeScore" , "Time used sec    "+secTime);
         
+			
+        	
     		runOnUiThread(new Runnable() {
 
     			public void run() {
-
+    				
+    				
     			  Toast.makeText(getApplicationContext(), "50 smil begynner å ligne på noe!!!", Toast.LENGTH_LONG).show();
 
     			   }
@@ -435,6 +468,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	}
     	
     	if (gameScore == 100){
+    		
     		runOnUiThread(new Runnable() {
 
     			public void run() {
@@ -445,7 +479,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     			});
     	}
     	
-    	if (gameScore == 15 ){
+    	if (gameScore == 150 ){
     		//WinnerFragment      =new WinFragment();
     		//getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, WinnerFragment ).commit();
     		 Log.i("Score" , "Put intent FdActivity");

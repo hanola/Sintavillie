@@ -8,7 +8,9 @@ import no.olav.samples.facedetect.MainActivity.*;
 import no.olav.samples.facedetect.WinFragment.Listener;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,7 +65,11 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
 				   
 			   }
 		  }
-			   
+		
+		  SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		  String name = preferences.getString("Name","");
+		  Log.i("Score", "SharedPref   "+name);
+		  
         updateUi();
         
 	}

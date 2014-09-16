@@ -34,6 +34,7 @@
     <string name="choose_difficulty">Velg en vanskelighetsgrad for spillet:</string>
     <string name="easy">Lett</string>
     <string name="hard">Vanskelig</string>
+    <string name="tutorial"></string>
     <string name="see_your_progress">Se fremgangen din:</string>
     <string name="show_achievements">Vis Prestasjoner</string>
     <string name="show_leaderboards">Vis Poengoversikt</string>
@@ -52,5 +53,8 @@
     <string name="choose">This is the smiling face</string>
     <string name="info0">The objective is to find smiling face among the sad faces</string>
     <string name="info1">To start game please click the button below.</string>
+    <string name="menu_take_photo">Take Photo</string>
+    <string name="title_activity_easy_camera">EasyCamera</string>
+    <string name="title_activity_easy_one_camera">EasyOneCamera</string>
 
 </resources>

@@ -16,6 +16,12 @@
 
 package no.olav.samples.facedetect;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,7 +38,7 @@ import android.widget.TextView;
  * @author Bruno Oliveira (Google)
  *
  */
-public class WinFragment extends Fragment implements OnClickListener {
+public class WinFragment extends DialogFragment implements OnClickListener {
     String mExplanation = "";
     int mScore = 0;
     boolean mShowSignIn = false;
@@ -43,6 +49,7 @@ public class WinFragment extends Fragment implements OnClickListener {
     }
 
     Listener mListener = null;
+	private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +58,9 @@ public class WinFragment extends Fragment implements OnClickListener {
         v.findViewById(R.id.win_ok_button).setOnClickListener(this);
         v.findViewById(R.id.win_screen_sign_in_button).setOnClickListener(this);
         return v;
+        
+       
+             	
     }
 
     public void setFinalScore(int i) {
@@ -83,6 +93,9 @@ public class WinFragment extends Fragment implements OnClickListener {
                 mShowSignIn ? View.VISIBLE : View.GONE);
         getActivity().findViewById(R.id.win_screen_signed_in_bar).setVisibility(
                 mShowSignIn ? View.GONE : View.VISIBLE);
+        
+        
+       
     }
 
     @Override

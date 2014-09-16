@@ -43,6 +43,7 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
         public void startFaceDetection();
         public void startTimeDetection();
       //  public void startTimedTrial();
+		public void startTutorial();
     }
 
     Listener mListener = null;
@@ -55,7 +56,8 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
         final int[] CLICKABLES = new int[] {
                 R.id.easy_mode_button, R.id.hard_mode_button,
                 R.id.show_achievements_button, R.id.show_leaderboards_button,
-                R.id.sign_in_button, R.id.sign_out_button
+                R.id.sign_in_button, R.id.sign_out_button,
+                R.id.tutorial
         };
         for (int i : CLICKABLES) {
             v.findViewById(i).setOnClickListener(this);
@@ -92,6 +94,9 @@ public class MainMenuFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+        case R.id.tutorial:
+            mListener.startTutorial();
+            break;
         case R.id.easy_mode_button:
             mListener.startFaceDetection();
             break;

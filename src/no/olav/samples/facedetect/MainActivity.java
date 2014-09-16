@@ -16,6 +16,9 @@
 
 package no.olav.samples.facedetect;
 
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+
 import org.opencv.samples.facedetect.FdActivity;
 
 import android.content.Context;
@@ -25,9 +28,18 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.achievement.Achievement;
+import com.google.android.gms.games.achievement.AchievementBuffer;
+import com.google.android.gms.games.achievement.Achievements;
+import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
 import com.google.example.games.basegameutils.BaseGameActivity;
+import com.google.example.games.basegameutils.GameHelper;
 
 /**
  * Our main activity for the game.
@@ -94,7 +106,7 @@ public class MainActivity extends BaseGameActivity
 			        pushAccomplishments();
 			   }
 		  }
-        
+		  
         
         // create fragments
         mMainMenuFragment = new MainMenuFragment();
@@ -222,7 +234,7 @@ public class MainActivity extends BaseGameActivity
         pushAccomplishments();
 
         // switch to the exciting "you won" screen
-        switchToFragment(mWinFragment);
+        //switchToFragment(mWinFragment);
     }
 
     // Checks if n is prime. We don't consider 0 and 1 to be prime.
@@ -314,11 +326,14 @@ public class MainActivity extends BaseGameActivity
             
             Games.Achievements.increment(getApiClient(), getString(R.string.achievement_bored),
                     mOutbox.mBoredSteps);
+            
+            
         }
         if (mOutbox.mEasyModeScore >= 0) {
             Games.Leaderboards.submitScore(getApiClient(), getString(R.string.leaderboard_easy),
                     mOutbox.mEasyModeScore);
             mOutbox.mEasyModeScore = -1;
+            
         }
         if (mOutbox.mHardModeScore >= 0) {
             Games.Leaderboards.submitScore(getApiClient(), getString(R.string.leaderboard_hard),
@@ -380,6 +395,15 @@ public class MainActivity extends BaseGameActivity
             Toast.makeText(this, getString(R.string.your_progress_will_be_uploaded),
                     Toast.LENGTH_LONG).show();
         }
+       
+        /*runOnUiThread(new Runnable() {
+
+			public void run() {
+
+			 // Toast.makeText(getApplicationContext(), "running loadachivemtns", Toast.LENGTH_SHORT).show();
+			  loadAchievements();
+			   }
+			});*/
     }
 
     @Override
@@ -448,6 +472,47 @@ public class MainActivity extends BaseGameActivity
        	  startActivity(l1);
       }
     
+    public void startTutorial(){
+    	//Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.IntroActivity.class);
+     	 // startActivity(l1);
+     	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
+      	  startActivity(l1);
+     }
     
+    public void loadAchievements()  {
+    	   GameHelper mHelper = null;        // GameHelper should be accessible for this to work
+
+    	   boolean fullLoad = false;  // set to 'true' to reload all achievements (ignoring cache)
+    	   long waitTime = 60;    // seconds to wait for achievements to load before timing out
+
+    	   // load achievements
+    	   /*  PendingResult p = Games.Achievements.load( mHelper.getApiClient(), fullLoad );
+    	   Achievements.LoadAchievementsResult r = (Achievements.LoadAchievementsResult)p.await( waitTime, TimeUnit.SECONDS );
+    	   int status = r.getStatus().getStatusCode();
+    	   if ( status != GamesStatusCodes.STATUS_OK )  {
+    	      r.release();
+    	      Toast.makeText(getApplicationContext(), "failed to load", Toast.LENGTH_LONG).show();
+    	      return;           // Error Occurred
+    	   }
+
+    	   // process the loaded achievements
+    	   AchievementBuffer buf = r.getAchievements();
+    	   int bufSize = buf.getCount();
+    	   for ( int i = 0; i < bufSize; i++ )  {
+    	      Achievement ach = buf.get( i );
+
+    	      // here you now have access to the achievement's data
+    	      String id = ach.getAchievementId();  // the achievement ID string
+    	      boolean unlocked = ach.getState() == Achievement.STATE_UNLOCKED;  // is unlocked
+    	      
+    	      Log.i("Score" , "unlocked   "+unlocked);
+    	      boolean incremental = ach.getType() == Achievement.TYPE_INCREMENTAL;  // is incremental
+    	      if ( incremental ){
+    	         int steps = ach.getCurrentSteps();  // current incremental steps
+    	      	}
+    	      }
+    	   buf.close();
+    	   r.release();*/
+    	}
     
 }
