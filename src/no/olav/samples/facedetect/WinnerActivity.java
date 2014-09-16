@@ -7,6 +7,8 @@ import com.google.example.games.basegameutils.BaseGameActivity;
 import no.olav.samples.facedetect.MainActivity.*;
 import no.olav.samples.facedetect.WinFragment.Listener;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +29,8 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
     boolean mShowSignIn = false;
     private static final int REQUEST_CODE = 10;
     
+    private Button mainBtn;
+
     
     public interface Listener {
         public void onWinScreenDismissed();
@@ -70,6 +74,8 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
 		  String name = preferences.getString("Name","");
 		  Log.i("Score", "SharedPref   "+name);
 		  
+		  
+		  
         updateUi();
         
 	}
@@ -105,6 +111,16 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
           //      mShowSignIn ? View.VISIBLE : View.GONE);
         //getActivity().findViewById(R.id.win_screen_signed_in_bar).setVisibility(
           //      mShowSignIn ? View.GONE : View.VISIBLE);
+        
+      /*          mainBtn = (Button) findViewById(R.id.button);  
+                mainBtn.setOnClickListener(new OnClickListener() {
+       @Override
+    public void onClick(View v) {
+             openAlert(v);
+             }
+          });*/
+
+        openAlert();
     }
 
     @Override
@@ -151,7 +167,73 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
 	 
 	 }
 	 
+	 private void openAlert() {
+		 
+		          AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(WinnerActivity.this);
+		 
+		           
+		 
+		          alertDialogBuilder.setTitle(this.getTitle()+ " decision");
+		 
+		          alertDialogBuilder.setMessage("Are you sure?");
+		 
+		          // set positive button: Yes message
+		 
+		          alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+		 
+		                 public void onClick(DialogInterface dialog,int id) {
+		 
+		                     // go to a new activity of the app
+		 
+		                     Intent positveActivity = new Intent(getApplicationContext(),
+		 
+		                             no.olav.samples.facedetect.MainActivity.class);
+		 
+		                     startActivity(positveActivity);
+		 
+		                 }
+		 
+		               });
+		 
+		          // set negative button: No message
+		 
+		          alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+		 
+		                 public void onClick(DialogInterface dialog,int id) {
+		
+		                     // cancel the alert box and put a Toast to the user
+		 
+		                     dialog.cancel();
+		 
+		                     Toast.makeText(getApplicationContext(), "You chose a negative answer",
+		 
+		                             Toast.LENGTH_LONG).show();
+		 
+		                 }
+		
+		             });
+		 
+		          // set neutral button: Exit the app message
+		
+		          alertDialogBuilder.setNeutralButton("Exit the app",new DialogInterface.OnClickListener() {
+		
+		                 public void onClick(DialogInterface dialog,int id) {
+		
+		                     // exit the app and go to the HOME
+		 
+		                     WinnerActivity.this.finish();
+		
+		                 }
+		
+		             });
+		
+		          AlertDialog alertDialog = alertDialogBuilder.create();
+		
+		          alertDialog.show();
+		
+		     }
+		
+		 }
+
 	 
 	 
-	 
-}

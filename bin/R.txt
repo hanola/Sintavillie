@@ -118,6 +118,7 @@ int id action_settings 0x7f080041
 int id any 0x7f080014
 int id back 0x7f080015
 int id book_now 0x7f080010
+int id button 0x7f080024
 int id buyButton 0x7f08000a
 int id buy_now 0x7f08000f
 int id buy_with_google 0x7f08000e
@@ -162,7 +163,6 @@ int id screen_gameplay 0x7f080029
 int id screen_menu 0x7f080018
 int id screen_win 0x7f080020
 int id selectionDetails 0x7f08000b
-int id sendToLeaderboard 0x7f080024
 int id show_achievements_button 0x7f08003b
 int id show_leaderboards_button 0x7f08003c
 int id sign_in_bar 0x7f08003d

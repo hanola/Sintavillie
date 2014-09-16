@@ -10,6 +10,7 @@ import java.util.Calendar;
 import no.olav.samples.facedetect.R;
 import no.olav.samples.facedetect.WinFragment;
 import no.olav.samples.facedetect.MainActivity;
+import no.olav.samples.facedetect.WinnerActivity;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
@@ -32,6 +33,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -445,6 +447,19 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     			});
     	}
     	
+    	if (gameScore == 20){
+    		
+    		
+    		runOnUiThread(new Runnable() {
+
+    			public void run() {
+                        openAlert();
+    			   }
+    			});
+    	}
+    	
+    	
+    	
     	//running in new thread to work
     	if (gameScore == 50){
     		stopTime = System.currentTimeMillis();
@@ -551,7 +566,71 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
             }
         }
     }
+    private void openAlert() {
+		 
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
 
+         
+
+        alertDialogBuilder.setTitle(this.getTitle()+ " decision");
+
+        alertDialogBuilder.setMessage("Are you sure?");
+
+        // set positive button: Yes message
+
+        alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+
+               public void onClick(DialogInterface dialog,int id) {
+
+                   // go to a new activity of the app
+
+                   Intent positveActivity = new Intent(getApplicationContext(),
+
+                           no.olav.samples.facedetect.MainActivity.class);
+
+                   startActivity(positveActivity);
+
+               }
+
+             });
+
+        // set negative button: No message
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+
+               public void onClick(DialogInterface dialog,int id) {
+
+                   // cancel the alert box and put a Toast to the user
+
+                   dialog.cancel();
+
+                   Toast.makeText(getApplicationContext(), "You chose a negative answer",
+
+                           Toast.LENGTH_LONG).show();
+
+               }
+
+           });
+
+        // set neutral button: Exit the app message
+
+        alertDialogBuilder.setNeutralButton("Exit the app",new DialogInterface.OnClickListener() {
+
+               public void onClick(DialogInterface dialog,int id) {
+
+                   // exit the app and go to the HOME
+
+                   FdActivity.this.finish();
+
+               }
+
+           });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+
+   }
 	
 }
 
