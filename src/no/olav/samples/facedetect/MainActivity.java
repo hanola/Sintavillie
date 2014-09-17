@@ -74,6 +74,10 @@ public class MainActivity extends BaseGameActivity
 
     // playing on hard mode?
     boolean mHardMode = false;
+    boolean mFrenzyMode = false;
+    
+    //playing in easy, hard or frenzy
+    String mode = "null";
 
     // achievements and scores we're pending to push to the cloud
     // (waiting for the user to sign in, for instance)
@@ -88,11 +92,17 @@ public class MainActivity extends BaseGameActivity
         Bundle extras = getIntent().getExtras();
 		  if (extras != null) {
 			   String datas= extras.getString("EXTRA_ID");
-			   int mScore = extras.getInt("Game_Score");
+			   int mScore2 = extras.getInt("Game_Score");
+			   int mScore = extras.getInt("Tot_Game_Score");
+			   mode = extras.getString("game_mode");
 			   int requestedScore = 0;
 			   if (datas!= null) {
 				   Log.i("Score" , "Put String MainAct   "+datas);
 				   Log.i("Score" , "Put int MainAct   "+mScore);
+				   Log.i("Score" , "TotGameScore MainAct   "+mScore);
+				   Log.i("Score" , "Put String gameMode MainAct   "+mode);
+				   
+				   //TODO send in putExtra form easy or hard
 				   mHardMode = true;
 				   
 				
@@ -340,6 +350,13 @@ public class MainActivity extends BaseGameActivity
                     mOutbox.mHardModeScore);
             mOutbox.mHardModeScore = -1;
         }
+        
+        if (mOutbox.mFrenzyScore >= 0) {
+            Games.Leaderboards.submitScore(getApiClient(), getString(R.string.leaderboard_super),
+                    mOutbox.mFrenzyScore);
+            mOutbox.mFrenzyScore = -1;
+        }
+        
         mOutbox.saveLocal(this);
     }
 
@@ -349,11 +366,28 @@ public class MainActivity extends BaseGameActivity
      * @param finalScore The score the user got.
      */
     void updateLeaderboards(int finalScore) {
+    	mOutbox.mFrenzyScore = finalScore;
+    	
         if (mHardMode && mOutbox.mHardModeScore < finalScore) {
             mOutbox.mHardModeScore = finalScore;
         } else if (!mHardMode && mOutbox.mEasyModeScore < finalScore) {
             mOutbox.mEasyModeScore = finalScore;
         }
+        
+        
+        
+        
+        
+        
+     /*   if (mode == "hard" & mOutbox.mHardModeScore < finalScore) {
+            mOutbox.mHardModeScore = finalScore;
+        }
+        if (mode == "easy" & mOutbox.mEasyModeScore < finalScore) {
+            mOutbox.mEasyModeScore = finalScore;
+        }
+        if (mode == "frenzy" & mOutbox.mFrenzyScore < finalScore) {
+            mOutbox.mFrenzyScore = finalScore;
+        }*/
     }
 
     @Override
@@ -437,11 +471,12 @@ public class MainActivity extends BaseGameActivity
         int mBoredSteps = 0;
         int mEasyModeScore = -1;
         int mHardModeScore = -1;
+        int mFrenzyScore   = -1;
 
         boolean isEmpty() {
             return !mPrimeAchievement && !mHumbleAchievement && !mPoengsamlerenAchivement &&
                     !mArrogantAchievement && mBoredSteps == 0 && mEasyModeScore < 0 &&
-                    mHardModeScore < 0;
+                    mHardModeScore < 0 && mFrenzyScore <0;
         }
 
         public void saveLocal(Context ctx) {
@@ -463,19 +498,18 @@ public class MainActivity extends BaseGameActivity
     }
     
     public void startFaceDetection(){
-   	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
+    	Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
     	  startActivity(l1);
    }
     
     public void startTimeDetection(){
-      	 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.IntroActivity.class);
+      	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
        	  startActivity(l1);
       }
     
     public void startTutorial(){
-    	//Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.IntroActivity.class);
-     	 // startActivity(l1);
-     	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
+    	
+     	 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.WinnerActivity.class);
       	  startActivity(l1);
      }
     

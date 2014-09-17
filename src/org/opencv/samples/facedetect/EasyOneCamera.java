@@ -10,7 +10,6 @@ import java.util.Calendar;
 import no.olav.samples.facedetect.R;
 import no.olav.samples.facedetect.WinFragment;
 import no.olav.samples.facedetect.MainActivity;
-import no.olav.samples.facedetect.WinnerActivity;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
@@ -31,28 +30,22 @@ import com.google.example.games.basegameutils.BaseGameActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class FdActivity extends FragmentActivity implements CvCameraViewListener2 {
+public class EasyOneCamera extends FragmentActivity implements CvCameraViewListener2 {
 
     private static final String    TAG                 = "OCVSample::Activity";
     private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
@@ -86,11 +79,8 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     private CameraBridgeViewBase   mOpenCvCameraView;
     private int                    gameScore           =0;
     private int                    TotGameScore           =0;
-    String mode                                     = "hard";
-    
     private Button 							learnbutton;
-    long FramestartTime = System.currentTimeMillis();
-	long estimatedTime;
+    String mode                                        = "easy";
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -224,7 +214,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         }
     };
 
-    public FdActivity() {
+    public EasyOneCamera() {
         mDetectorName = new String[2];
         mDetectorName[JAVA_DETECTOR] = "Java";
         mDetectorName[NATIVE_DETECTOR] = "Native (tracking)";
@@ -256,7 +246,11 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
             }
         });*/
         
-       
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("Name", "Olav");
+        editor.apply();
     }
 
     @Override
@@ -282,13 +276,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     public void onCameraViewStarted(int width, int height) {
         mGray = new Mat();
         mRgba = new Mat();
-        
-        runOnUiThread(new Runnable() {
-
-			public void run() {
-                    openAlertStart();  
-			   }
-			});
+        openAlertStart();
     }
 
     public void onCameraViewStopped() {
@@ -297,8 +285,6 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-    	
-    	long estimatedTime = System.currentTimeMillis() - FramestartTime;
     	
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
@@ -331,12 +317,9 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         	Log.e(TAG, "Detection method is not selected!");
         }
         
-       
-        
-        
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
-            //Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+            Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
        
         if(facesArray.length>0)
         {
@@ -351,7 +334,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         	
         	//testing smaller ROI
             Rect mouth2 = new Rect(facesArray[0].x + facesArray[0].width/12, (int)(facesArray[0].y+(facesArray[0].height/1.6)),facesArray[0].width - 2*facesArray[0].width/12,(int)(facesArray[0].height/3));
-            //Core.rectangle(mRgba, mouth2.tl(), mouth2.br(), new Scalar(255,0, 150, 150), 2);
+            Core.rectangle(mRgba, mouth2.tl(), mouth2.br(), new Scalar(255,0, 150, 150), 2);
             //--------------------------------------------
             
         	//taking inputs from nustrat opencv example
@@ -408,9 +391,6 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     
     for (int j = 0; j < mouthArray.length; j++)
     {
-    	
-    	long timeMouth = System.currentTimeMillis();
-    	estimatedTime = (timeMouth - FramestartTime)/1000;
       
     	x2.x=facesArray[0].x + mouthArray[j].x + mouthArray[j].width*0.5;
     	x2.y=facesArray[0].y + mouthArray[j].y + mouthArray[j].height*0.5;
@@ -428,9 +408,9 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	String Score = Integer.toString(gameScore);
     	Log.i("Score" , "String Score    "+Score);
     	Log.i("Score","Game Score  "+gameScore);
-    	Core.putText(mRgba, "Score  " +Score, x2, 2, 4 , EYE_RECT_COLOR);
+    	Core.putText(mRgba, "Smile", x2, 2, 4 , EYE_RECT_COLOR);
+    	//Core.putText(mRgba, "Score  " +Score, x2, 2, 4 , EYE_RECT_COLOR);
     	
-    	Log.i("TotScore" , "estimated time  "+estimatedTime);
     	
     	if (gameScore == 1){
     		startTime = System.currentTimeMillis();
@@ -439,82 +419,40 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	
     	
     	//running in new thread to work
-    	if (gameScore == 20){
-    		runOnUiThread(new Runnable() {
-
-    			public void run() {
-    				//Toast.makeText(getApplicationContext(), "NŒ er vi igang!", Toast.LENGTH_LONG).show();
-
-    				String message = "Hei pŒ deg:)"; 
-    			  
-    			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG);
-    		        toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
-
-    		        TextView textView = new TextView(getApplicationContext());
-    		        textView.setBackgroundColor(Color.DKGRAY);
-    		        textView.setTextColor(Color.WHITE);
-    		        textView.setTextSize(30);
-    		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
-    		        textView.setTypeface(typeface);
-    		        textView.setPadding(10, 10, 10, 10);
-    		        textView.setText(message);
-
-    		        toast.setView(textView);
-    		        toast.show();
-    			   }
-    			});
-    	}
-    	
     	if (gameScore == 15){
     		Log.i("TotScore" , "TotScore i if 15 before  "+TotGameScore);
     		Log.i("TotScore" , "Score i if 15   "+gameScore);
     		TotGameScore = TotGameScore + gameScore;
     		Log.i("TotScore" , "TotScore i if 15 after   "+TotGameScore);
-    		 
-    		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    		 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
     	       
-    		 SharedPreferences.Editor editor = preferences.edit();
- 	        editor.putString("Name", "Olav");
- 	        editor.putInt("ScoreSmile", gameScore/15);
- 	        editor.putInt("TotGameScore", TotGameScore/15);
- 	        editor.apply();
+    	        SharedPreferences.Editor editor = preferences.edit();
+    	        editor.putString("Name", "Olav");
+    	        editor.putInt("ScoreSmile", gameScore/15);
+    	        editor.putInt("TotGameScore", TotGameScore/15);
+    	        editor.apply();
     	        
-    		gameScore = 0;
-    	}
-    	
-    	
-    	
-    	int timeMode = 2;
-    	
-    	if(estimatedTime == 20 & timeMode == 2){
     		runOnUiThread(new Runnable() {
 
     			public void run() {
-    				//Toast.makeText(getApplicationContext(), "NŒ er vi igang!", Toast.LENGTH_LONG).show();
-
-    				String message = "Timer virker"; 
-    			  
-    			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT);
-    		        toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
-    		        toast.setDuration(1);
-    		        TextView textView = new TextView(getApplicationContext());
-    		        textView.setBackgroundColor(Color.DKGRAY);
-    		        textView.setTextColor(Color.WHITE);
-    		        textView.setTextSize(30);
-    		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
-    		        textView.setTypeface(typeface);
-    		        textView.setPadding(10, 10, 10, 10);
-    		        textView.setText(message);
-
-    		        toast.setView(textView);
-    		        toast.show();
+                        openAlert();  
     			   }
     			});
-    			
-    			
     	}
     	
-    	/*//running in new thread to work
+    	//running in new thread to work
+    /*	if (gameScore == 20){
+    		runOnUiThread(new Runnable() {
+
+    			public void run() {
+
+    			  Toast.makeText(getApplicationContext(), "NŒ er vi igang!", Toast.LENGTH_LONG).show();
+
+    			   }
+    			});
+    	}
+    	
+    	//running in new thread to work
     	if (gameScore == 50){
     		stopTime = System.currentTimeMillis();
         	Log.i("timeScore" , "StopTime    "+stopTime);
@@ -523,13 +461,10 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         	Log.i("timeScore" , "Time used    "+sumTime);
         	Log.i("timeScore" , "Time used sec    "+secTime);
         
-			
-        	
     		runOnUiThread(new Runnable() {
 
     			public void run() {
-    				
-    				
+
     			  Toast.makeText(getApplicationContext(), "50 smil begynner Œ ligne pŒ noe!!!", Toast.LENGTH_LONG).show();
 
     			   }
@@ -551,8 +486,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	if (gameScore == 150 ){
     		//WinnerFragment      =new WinFragment();
     		//getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, WinnerFragment ).commit();
-    		 
-    		Log.i("Score" , "Put intent FdActivity");
+    		 Log.i("Score" , "Put intent FdActivity");
     		
     		Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.WinnerActivity.class);
     		l1.putExtra("EXTRA_ID", Score);
@@ -625,7 +559,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	
     	
 		 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EasyOneCamera.this);
 
          
 
@@ -709,10 +643,11 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         alertDialog.show();
 
    }
-
+	
+    
     private void openAlertStart() {
 		 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EasyOneCamera.this);
         alertDialogBuilder.setTitle(this.getTitle()+ " valg");
         alertDialogBuilder.setMessage("Se om du kan finne noen smilende fjes rundt deg...");
         // set neutral button: verify message
@@ -725,27 +660,5 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         alertDialog.show();
    }
     
-}
+} 
 
-/*
-//Smile Detector classifier load TODO:make ROI so the detector is more efficient
-if (mDetectorType == JAVA_DETECTOR) {
-    if (mSmileDetector!= null)
-    	mSmileDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-    
-    //inserted from fdview ----------------------------------------------------------
-    
-    Rect[] facesArray = faces.toArray();
-    for (int i = 0; i < facesArray.length; i++){
-     	Rect r = facesArray[i];
-         Core.rectangle(mGray, r.tl(), r.br(), new Scalar(0, 255, 0, 255), 3);
-         Core.rectangle(mRgba, r.tl(), r.br(), new Scalar(0, 255, 0, 255), 3);
-    
-    //inserts the rectangle ROI for mouth 
-    mouth = new Rect(r.x + r.width/12, (int)(r.y+(r.height/1.6)),r.width - 2*r.width/12,(int)(r.height/3));
-    Core.rectangle(mRgba, mouth.tl(), mouth.br(), new Scalar(255,0, 150, 150), 2);
-    //--------------------------------------------
-
-
-*/

@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +29,7 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
     String datas;
     boolean mShowSignIn = false;
     private static final int REQUEST_CODE = 10;
-    
+    static CountDownTimer myTimer =null;    
     private Button mainBtn;
 
     
@@ -72,7 +73,9 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
 		
 		  SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		  String name = preferences.getString("Name","");
-		  Log.i("Score", "SharedPref   "+name);
+		  int scoreSmile = preferences.getInt("ScoreSmile", mScore);
+		  Log.i("Score", "SharedPref winner  "+name);
+		  Log.i("Score", "SharedPref scoreSmile   "+scoreSmile);
 		  
 		  
 		  
@@ -100,11 +103,31 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
 
     void updateUi() {
     	
-        TextView scoreTv = (TextView)findViewById(R.id.score_display);
+       
         TextView explainTv = (TextView)findViewById(R.id.scoreblurb);
 
-        if (scoreTv != null) scoreTv.setText(String.valueOf(mScore));
+       // if (scoreTv != null) scoreTv.setText(String.valueOf(mScore));
         if (explainTv != null) explainTv.setText(mExplanation);
+       
+        
+        new CountDownTimer(30000, 1000) {
+        	TextView scoreTv = (TextView)findViewById(R.id.score_display);
+		     public void onTick(long millisUntilFinished) {
+		    	
+		      scoreTv.setText("seconds remaining: " + millisUntilFinished / 1000);
+		      
+		      
+		     }
+
+		     public void onFinish() {
+		         scoreTv.setText("done!");
+		     }
+		  }.start();
+		  
+		  
+		  
+		
+        
         //SignInButton SignIn = (SignInButton)findViewById(R.id.win_screen_sign_in_bar);
        
         //getActivity().findViewById(R.id.win_screen_sign_in_bar).setVisibility(
@@ -120,7 +143,9 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
              }
           });*/
 
-        openAlert();
+
+        //openAlert();
+        countDown();
     }
 
     @Override
@@ -205,9 +230,7 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
 		 
 		                     dialog.cancel();
 		 
-		                     Toast.makeText(getApplicationContext(), "You chose a negative answer",
-		 
-		                             Toast.LENGTH_LONG).show();
+		                    
 		 
 		                 }
 		
@@ -232,6 +255,24 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
 		          alertDialog.show();
 		
 		     }
+	 public void countDown (){
+		 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(WinnerActivity.this);
+	 alertDialog.setTitle("Alert 3");  
+	 alertDialog.setMessage("00:10");
+	 alertDialog.show();   // 
+
+	 new CountDownTimer(10000, 1000) {
+	     @Override
+	     public void onTick(long millisUntilFinished) {
+	        alertDialog.setMessage("00:"+ (millisUntilFinished/1000));
+	     }
+
+	     @Override
+	     public void onFinish() {
+	        
+	     }
+	 }.start();
+	 }
 		
 		 }
 
