@@ -87,9 +87,10 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     private int                    gameScore           =0;
     private int                    TotGameScore           =0;
     String mode                                     = "hard";
-    
+    int countDown;
+    int countDownTimer;
     private Button 							learnbutton;
-    long FramestartTime = System.currentTimeMillis();
+    long FstartTime = System.currentTimeMillis();
 	long estimatedTime;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
@@ -289,6 +290,8 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
                     openAlertStart();  
 			   }
 			});
+        
+        
     }
 
     public void onCameraViewStopped() {
@@ -298,8 +301,149 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
     	
-    	long estimatedTime = System.currentTimeMillis() - FramestartTime;
     	
+    	
+    	//long estimatedTime = System.currentTimeMillis() - FstartTime;
+    	long timeMouth = System.currentTimeMillis();
+    	estimatedTime = (timeMouth - FstartTime)/1000;
+  
+    	Log.i("TotTime", "time est  " +estimatedTime);
+    	
+    		
+    	
+    	
+    	int timeMode = 2;
+    	
+    	if(estimatedTime == 30 & timeMode == 2){
+    		
+    		final long ToastTime = estimatedTime;
+    		runOnUiThread(new Runnable() {
+    			
+    			public void run() {
+    				//Toast.makeText(getApplicationContext(), "Nå er vi igang!", Toast.LENGTH_LONG).show();
+
+    				String message = "Det har gått "; 
+    				String message2 = " sekunder siden start! ";
+    			    String timeMessage = message + Long.toString(ToastTime) + message2;
+    			  Toast toast = Toast.makeText(getApplicationContext(),timeMessage, Toast.LENGTH_SHORT);
+    		        toast.setGravity(Gravity.TOP, toast.getXOffset() / 2, toast.getYOffset() / 2);
+    		        
+    		        TextView textView = new TextView(getApplicationContext());
+    		        textView.setBackgroundColor(Color.BLUE);
+    		        textView.setTextColor(Color.RED);
+    		        textView.setTextSize(20);
+    		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
+    		        textView.setTypeface(typeface);
+    		        textView.setPadding(10, 10, 10, 10);
+    		        textView.setText(timeMessage);
+
+    		        toast.setView(textView);
+    		        toast.show();
+    			   }
+    			});
+    		
+    	}
+    			
+    		if(estimatedTime == 120 & timeMode == 2){
+        		
+        		final long ToastTime2 = estimatedTime;
+        		runOnUiThread(new Runnable() {
+        			
+        			public void run() {
+        				
+
+        				String message = "2 min siden start!! "; 
+        				
+        				String message2 = " sekunder siden start! ";
+        			    String timeMessage = message + Long.toString(ToastTime2) + message2;
+        			    
+        			    
+        			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT);
+        		        toast.setGravity(Gravity.TOP, toast.getXOffset() / 2, toast.getYOffset() / 2);
+        		        
+        		        TextView textView = new TextView(getApplicationContext());
+        		        textView.setBackgroundColor(Color.BLUE);
+        		        textView.setTextColor(Color.RED);
+        		        textView.setTextSize(20);
+        		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
+        		        textView.setTypeface(typeface);
+        		        textView.setPadding(10, 10, 10, 10);
+        		        textView.setText(message);
+
+        		        toast.setView(textView);
+        		        toast.show();
+        			   }
+        			});
+    		}
+        		if(estimatedTime == 160 & timeMode == 2){
+            		
+            		
+            		runOnUiThread(new Runnable() {
+            			
+            			public void run() {
+            				
+
+            				String message = "20 sekunder igjen!! "; 
+            				
+            				
+            			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG);
+            		        toast.setGravity(Gravity.TOP, toast.getXOffset() / 2, toast.getYOffset() / 2);
+            		        
+            		        TextView textView = new TextView(getApplicationContext());
+            		        textView.setBackgroundColor(Color.BLUE);
+            		        textView.setTextColor(Color.RED);
+            		        textView.setTextSize(20);
+            		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
+            		        textView.setTypeface(typeface);
+            		        textView.setPadding(10, 10, 10, 10);
+            		        textView.setText(message);
+
+            		        toast.setView(textView);
+            		        toast.show();
+            			   }
+            			});
+        		}
+        		
+        		    if(estimatedTime == 180 || TotGameScore == 50){
+        		    	
+                 	   
+                 	   
+                 	   
+                        // exit the app and go to the HOME
+                 	   if (TotGameScore <50)
+                 	   {
+                 		  Intent looseAct = new Intent(getApplicationContext(), no.olav.samples.facedetect.LooserActivity.class);
+                   	   
+                   	   
+                   	   
+                   	looseAct.putExtra("EXTRA_ID", estimatedTime);
+                   	Log.i("TotScore" , "estimated time    "+estimatedTime);
+                   	looseAct.putExtra("Tot_Game_Score", TotGameScore/10);
+                   	Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
+                          startActivity(looseAct);
+                 	   }
+                 	   
+                 	   else {
+                 	   
+                 	   Intent winAct = new Intent(getApplicationContext(),
+
+                                WinnerActivity.class);
+                 	   Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
+                 	   Log.i("TotScore" , "estimated time    "+estimatedTime);
+                 	   TotGameScore = 0;
+                 	   
+                 	  winAct.putExtra("EXTRA_ID", estimatedTime);
+                 	  winAct.putExtra("Game_Score", gameScore);
+                		winAct.putExtra("Tot_Game_Score", 5);
+                		winAct.putExtra("game_mode", mode);
+                		Log.i("TotScore" , "estimated time    "+estimatedTime);
+                        startActivity(winAct);
+        	
+                 	   }
+            		
+        		
+    			
+    	}
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
 
@@ -331,12 +475,42 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         	Log.e(TAG, "Detection method is not selected!");
         }
         
-       
+        Point point = new Point(20, 100);
+        Point point2 = new Point(20, 200);
+        Point point3 = new Point(20, 300);
+        Point point4 = new Point(20, 400);
+        countDown = 5 - (TotGameScore/10);
+        countDownTimer = (int) (180 - estimatedTime);
+        Core.putText(mRgba, "Time  " +estimatedTime, point, 2, 3 , EYE_RECT_COLOR);
+        Core.putText(mRgba, "Poeng  " +TotGameScore/10, point2, 2, 2 , EYE_RECT_COLOR);
+        Core.putText(mRgba, "Smil igjen  " +countDown, point3, 2, 1 , EYE_RECT_COLOR);
+        Core.putText(mRgba, "Tid igjen  " +countDownTimer, point4, 2, 1 , EYE_RECT_COLOR);
+        
+        /*Point x5=new Point();
+        //using opencv tutorials for circle, its working fine now.
+        
+        
+        	x1.x=mRgba.;
+        	x1.y=facesArray[0].y + eyesArray[i].y + eyesArray[i].height*0.5;
+        	int Radius=(int)((eyesArray[i].width + eyesArray[i].height)*0.25 );
+        	Core.circle(mRgba, x1, Radius, EYE_RECT_COLOR);
+        	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
+        	
+        	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3);
+        	//x1.x=eyesArray[i].tl().x + facesArray[0].width;
+        	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
+        	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
+        }
+        */
+        
+        
+        
+        
         
         
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
-            //Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+            Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
        
         if(facesArray.length>0)
         {
@@ -409,8 +583,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     for (int j = 0; j < mouthArray.length; j++)
     {
     	
-    	long timeMouth = System.currentTimeMillis();
-    	estimatedTime = (timeMouth - FramestartTime)/1000;
+    	
       
     	x2.x=facesArray[0].x + mouthArray[j].x + mouthArray[j].width*0.5;
     	x2.y=facesArray[0].y + mouthArray[j].y + mouthArray[j].height*0.5;
@@ -428,9 +601,9 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	String Score = Integer.toString(gameScore);
     	Log.i("Score" , "String Score    "+Score);
     	Log.i("Score","Game Score  "+gameScore);
-    	Core.putText(mRgba, "Score  " +Score, x2, 2, 4 , EYE_RECT_COLOR);
+    	Core.putText(mRgba, "SMILE", x2, 2, 4 , FACE_RECT_COLOR);
     	
-    	Log.i("TotScore" , "estimated time  "+estimatedTime);
+    	Log.i("TotScore" , "estimated time on smile  "+estimatedTime);
     	
     	if (gameScore == 1){
     		startTime = System.currentTimeMillis();
@@ -439,7 +612,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	
     	
     	//running in new thread to work
-    	if (gameScore == 20){
+    	/*if (gameScore == 20){
     		runOnUiThread(new Runnable() {
 
     			public void run() {
@@ -463,11 +636,14 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     		        toast.show();
     			   }
     			});
-    	}
+    	}*/
     	
-    	if (gameScore == 15){
+    	if (gameScore == 10){
     		Log.i("TotScore" , "TotScore i if 15 before  "+TotGameScore);
     		Log.i("TotScore" , "Score i if 15   "+gameScore);
+    		
+    		
+    		
     		TotGameScore = TotGameScore + gameScore;
     		Log.i("TotScore" , "TotScore i if 15 after   "+TotGameScore);
     		 
@@ -475,44 +651,24 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	       
     		 SharedPreferences.Editor editor = preferences.edit();
  	        editor.putString("Name", "Olav");
- 	        editor.putInt("ScoreSmile", gameScore/15);
- 	        editor.putInt("TotGameScore", TotGameScore/15);
+ 	        editor.putInt("ScoreSmile", gameScore/10);
+ 	        editor.putInt("TotGameScore", TotGameScore/10);
  	        editor.apply();
     	        
     		gameScore = 0;
-    	}
-    	
-    	
-    	
-    	int timeMode = 2;
-    	
-    	if(estimatedTime == 20 & timeMode == 2){
+    		
     		runOnUiThread(new Runnable() {
 
     			public void run() {
-    				//Toast.makeText(getApplicationContext(), "Nå er vi igang!", Toast.LENGTH_LONG).show();
-
-    				String message = "Timer virker"; 
-    			  
-    			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT);
-    		        toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
-    		        toast.setDuration(1);
-    		        TextView textView = new TextView(getApplicationContext());
-    		        textView.setBackgroundColor(Color.DKGRAY);
-    		        textView.setTextColor(Color.WHITE);
-    		        textView.setTextSize(30);
-    		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
-    		        textView.setTypeface(typeface);
-    		        textView.setPadding(10, 10, 10, 10);
-    		        textView.setText(message);
-
-    		        toast.setView(textView);
-    		        toast.show();
+                        openAlert();  
     			   }
     			});
     			
-    			
     	}
+    	
+    	
+    	
+    	
     	
     	/*//running in new thread to work
     	if (gameScore == 50){
@@ -629,18 +785,18 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
 
          
 
-        alertDialogBuilder.setTitle(this.getTitle()+ " valg.  Dine poeng  " +TotGameScore/15);
+        alertDialogBuilder.setTitle(this.getTitle()+ "    Dine poeng  " +TotGameScore/10);
 
-        alertDialogBuilder.setMessage("Vil du samle flere smil?");
+        alertDialogBuilder.setMessage("Bra jobbet");
 
         // set positive button: Yes message
 
-        alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
 
                public void onClick(DialogInterface dialog,int id) {
 
             	   //TotGameScore = TotGameScore + gameScore;
-            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/15);
+            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/10);
                    // go to a new activity of the app
             	   gameScore = 0;
             	  	dialog.dismiss();
@@ -680,7 +836,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
 
         // set neutral button: Exit the app message
 
-        alertDialogBuilder.setNeutralButton("Nei",new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton("Exit",new DialogInterface.OnClickListener() {
 
                public void onClick(DialogInterface dialog,int id) {
             	   String Score = Integer.toString(gameScore);
@@ -691,9 +847,12 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
 
                            no.olav.samples.facedetect.MainActivity.class);
             	   Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
+            	   
+            	   TotGameScore = 0;
+            	   
             	   hovedmeny.putExtra("EXTRA_ID", Score);
            		hovedmeny.putExtra("Game_Score", gameScore);
-           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/15);
+           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/10);
            		hovedmeny.putExtra("game_mode", mode);
                    startActivity(hovedmeny);
                   
@@ -710,14 +869,165 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
 
    }
 
+    private void openAlertDone() {
+    	
+    	
+		 
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
+
+         
+
+        alertDialogBuilder.setTitle(this.getTitle()+ "    Dine poeng  " +TotGameScore/10);
+
+        alertDialogBuilder.setMessage("Gladere og gladere...");
+
+        // set positive button: Yes message
+
+        alertDialogBuilder.setPositiveButton("Prøv igjen? ",new DialogInterface.OnClickListener() {
+
+               public void onClick(DialogInterface dialog,int id) {
+
+            	   //TotGameScore = TotGameScore + gameScore;
+            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/10);
+                   // go to a new activity of the app
+            	   estimatedTime = 0;
+            	   gameScore = 0;
+            	   TotGameScore = 0;
+            	  	dialog.dismiss();
+            	   
+            	  	FdActivity.this.recreate();
+            	  /* Intent hovedmeny = new Intent(getApplicationContext(),
+
+                           no.olav.samples.facedetect.MainActivity.class);
+
+                   */
+            	   
+
+               }
+
+             });
+
+       
+        alertDialogBuilder.setNeutralButton("Exit og lagre ny score",new DialogInterface.OnClickListener() {
+
+               public void onClick(DialogInterface dialog,int id) {
+            	   String Score = Integer.toString(gameScore);
+            	   gameScore = 0;
+            	 
+                   // exit the app and go to the HOME
+            	   Intent hovedmeny = new Intent(getApplicationContext(),
+
+                           no.olav.samples.facedetect.MainActivity.class);
+            	   Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
+            	   Log.i("TotScore" , "estimated time    "+estimatedTime);
+            	   TotGameScore = 0;
+            	   
+            	   hovedmeny.putExtra("EXTRA_ID", Score);
+           		hovedmeny.putExtra("Game_Score", gameScore);
+           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/10);
+           		hovedmeny.putExtra("game_mode", mode);
+                   startActivity(hovedmeny);
+                  
+                   
+                   
+
+               }
+
+           });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+
+   }
+    private void GameOver() {
+    	
+    	
+		 
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
+
+         
+
+        alertDialogBuilder.setTitle("Game Over");
+
+        alertDialogBuilder.setMessage("Prøv igjen...");
+        
+        // set positive button: Yes message
+
+        alertDialogBuilder.setPositiveButton("Prøv igjen? ",new DialogInterface.OnClickListener() {
+
+               public void onClick(DialogInterface dialog,int id) {
+
+            	   //TotGameScore = TotGameScore + gameScore;
+            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/10);
+                   // go to a new activity of the app
+            	   TotGameScore = 0;
+            	   gameScore = 0;
+            	   estimatedTime = 0;
+            	  	dialog.dismiss();
+            	   
+            	  	//FdActivity.this.recreate();
+            	   Intent hovedmeny = new Intent(getApplicationContext(),
+
+                          org.opencv.samples.facedetect.FdActivity.class);
+
+            	   startActivity(hovedmeny);
+            	   
+
+               }
+
+             });
+
+       
+        alertDialogBuilder.setNeutralButton("Exit",new DialogInterface.OnClickListener() {
+
+               public void onClick(DialogInterface dialog,int id) {
+            	   gameScore = 0;
+            	   String Score = Integer.toString(gameScore);
+            	   gameScore = 0;
+            	   TotGameScore = 0;
+                   // exit the app and go to the HOME
+            	   Intent hovedmeny = new Intent(getApplicationContext(),
+
+                           no.olav.samples.facedetect.MainActivity.class);
+            	   Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
+            	   Log.i("TotScore" , "estimated time    "+estimatedTime);
+            	   TotGameScore = 0;
+            	   
+            	   hovedmeny.putExtra("EXTRA_ID", Score);
+           		hovedmeny.putExtra("Game_Score", gameScore);
+           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/10);
+           		hovedmeny.putExtra("game_mode", mode);
+                   startActivity(hovedmeny);
+                  
+                   
+                   
+
+               }
+
+           });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+
+   }
+    
     private void openAlertStart() {
 		 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
         alertDialogBuilder.setTitle(this.getTitle()+ " valg");
-        alertDialogBuilder.setMessage("Se om du kan finne noen smilende fjes rundt deg...");
+        alertDialogBuilder.setMessage("Klar 5 smil på 3 min...");
+        
+        
+        
         // set neutral button: verify message
         alertDialogBuilder.setNeutralButton("Ok",new DialogInterface.OnClickListener() {
-               public void onClick(DialogInterface dialog,int id) {
+               
+        	
+        	
+        	
+        	public void onClick(DialogInterface dialog,int id) {
                    return;
                 }
            });

@@ -95,12 +95,21 @@ public class MainActivity extends BaseGameActivity
 			   int mScore2 = extras.getInt("Game_Score");
 			   int mScore = extras.getInt("Tot_Game_Score");
 			   mode = extras.getString("game_mode");
+			   int timeExpired = extras.getInt("time_expired");
+			   
+			   Log.i("Score" , "Put String MainAct time long  "+datas);
+			   Log.i("Score" , "Put int MainAct score   "+mScore);
+			   Log.i("Score" , "TotGameScore MainAct   "+mScore);
+			   Log.i("Score" , " gameMode MainAct   "+mode);
+			   Log.i("Score" , "time expired   "+timeExpired);
+			   
 			   int requestedScore = 0;
-			   if (datas!= null) {
-				   Log.i("Score" , "Put String MainAct   "+datas);
-				   Log.i("Score" , "Put int MainAct   "+mScore);
-				   Log.i("Score" , "TotGameScore MainAct   "+mScore);
-				   Log.i("Score" , "Put String gameMode MainAct   "+mode);
+			   if (mode!= null) {
+				   Log.i("Score" , "AfterPut String MainAct time long  "+datas);
+				   Log.i("Score" , "afterPut int MainAct score   "+mScore);
+				   Log.i("Score" , "afterTotGameScore MainAct   "+mScore);
+				   Log.i("Score" , "after gameMode MainAct   "+mode);
+				   Log.i("Score" , "aftertime expired   "+timeExpired);
 				   
 				   //TODO send in putExtra form easy or hard
 				   mHardMode = true;
@@ -110,7 +119,7 @@ public class MainActivity extends BaseGameActivity
 			        checkForAchievements(requestedScore, mScore);
                    
 			        //update leaderboards
-			        updateLeaderboards(mScore);
+			        updateLeaderboards(mScore, timeExpired );
 
 			        // push those accomplishments to the cloud, if signed in
 			        pushAccomplishments();
@@ -238,7 +247,7 @@ public class MainActivity extends BaseGameActivity
         checkForAchievements(requestedScore, finalScore);
 
         // update leaderboards
-        updateLeaderboards(finalScore);
+        //updateLeaderboards(finalScore);
 
         // push those accomplishments to the cloud, if signed in
         pushAccomplishments();
@@ -365,11 +374,11 @@ public class MainActivity extends BaseGameActivity
      *
      * @param finalScore The score the user got.
      */
-    void updateLeaderboards(int finalScore) {
+    void updateLeaderboards(int finalScore, int time) {
     	mOutbox.mFrenzyScore = finalScore;
     	
-        if (mHardMode && mOutbox.mHardModeScore < finalScore) {
-            mOutbox.mHardModeScore = finalScore;
+        if (mHardMode && mOutbox.mHardModeScore < time) {
+            mOutbox.mHardModeScore = time;
         } else if (!mHardMode && mOutbox.mEasyModeScore < finalScore) {
             mOutbox.mEasyModeScore = finalScore;
         }
