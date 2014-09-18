@@ -124,6 +124,8 @@ int intLong;
 		
 	//	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
 	  //	  startActivity(l1);
+		 
+		 
 		 if (WinMode.contentEquals("easy")){
 			 Intent l2 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
 	  	  startActivity(l2);
@@ -135,7 +137,7 @@ int intLong;
 		 }
 		 
 		 if (WinMode.contentEquals("frenzy")){
-			 Intent l4 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
+			 Intent l4 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FrenzyActivity.class);
 	  	  startActivity(l4);
 		 }
 		 

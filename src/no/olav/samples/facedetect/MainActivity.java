@@ -112,7 +112,7 @@ public class MainActivity extends BaseGameActivity
 				   Log.i("Score" , "aftertime expired   "+timeExpired);
 				   
 				   //TODO send in putExtra form easy or hard
-				   mHardMode = true;
+				   mHardMode = false;
 				   
 				
 				   // check for achievements
@@ -375,12 +375,22 @@ public class MainActivity extends BaseGameActivity
      * @param finalScore The score the user got.
      */
     void updateLeaderboards(int finalScore, int time) {
-    	mOutbox.mFrenzyScore = finalScore;
     	
-        if (mHardMode && mOutbox.mHardModeScore < time) {
+    	Log.i("Score", "in update leaderboard" +finalScore);
+    	
+    	if (mode.contentEquals("frenzy") && mOutbox.mFrenzyScore < finalScore) {
+    			mOutbox.mFrenzyScore = finalScore;
+    			Log.i("Score", "in update frenzy" +finalScore);
+    	}
+    	
+        if (mode.contentEquals("hard") && mOutbox.mHardModeScore < time) {
             mOutbox.mHardModeScore = time;
-        } else if (!mHardMode && mOutbox.mEasyModeScore < finalScore) {
+            Log.i("Score", "in update hard" +finalScore);
+        } 
+        
+        if (mode.contentEquals("easy") && mOutbox.mEasyModeScore < finalScore) {
             mOutbox.mEasyModeScore = finalScore;
+            Log.i("Score", "in update easy" +finalScore);
         }
         
         
@@ -518,8 +528,9 @@ public class MainActivity extends BaseGameActivity
     
     public void startTutorial(){
     	
-     	 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.WinnerActivity.class);
+     	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FrenzyActivity.class);
       	  startActivity(l1);
+      	 // no.olav.samples.facedetect.LooserActivity
      }
     
     public void loadAchievements()  {

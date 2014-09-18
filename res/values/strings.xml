@@ -34,6 +34,7 @@
     <string name="choose_difficulty">Velg en vanskelighetsgrad for spillet:</string>
     <string name="easy">Lett</string>
     <string name="hard">Vanskelig</string>
+    <string name="frenzy">Super</string>
     <string name="tutorial"></string>
     <string name="see_your_progress">Se fremgangen din:</string>
     <string name="show_achievements">Vis Prestasjoner</string>
@@ -42,7 +43,6 @@
     <string name="you_are_signed_in">Du er nå logget inn med Google</string>
     <string name="sign_out">Logg ut</string>
     <string name="you_loose">Du tapte!!</string>
-    
     <string name="you_win">Du vant!</string>
     <string name="sign_in_to_upload_this_score">Sign in now to upload this score, save your achievements and share your progress with friends.</string>
     <string name="title_activity_winner">WinnerActivity</string>
@@ -60,6 +60,8 @@
     <string name="title_activity_easy_one_camera">EasyOneCamera</string>
     <string name="title_activity_looser">Game Over</string>
     <string name="ok_til_main">Lagre</string>
+    <string name="ok_looser">Exit</string>
     <string name="again">Prøv igjen</string>
+    <string name="title_activity_frenzy">FrenzyActivity</string>
 
 </resources>

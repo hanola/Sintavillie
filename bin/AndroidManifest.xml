@@ -43,7 +43,7 @@
         <activity
             android:name="no.olav.samples.facedetect.WinnerActivity"
             android:label="@string/title_activity_winner"
-            android:parentActivityName="no.olav.samples.facedetect.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -65,8 +65,15 @@
         </activity>
         <activity
             android:name="no.olav.samples.facedetect.LooserActivity"
-            android:label="@string/title_activity_looser" 
-            android:screenOrientation="portrait">
+            android:label="@string/title_activity_looser"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="org.opencv.samples.facedetect.FrenzyActivity"
+            android:label="@string/title_activity_frenzy" 
+             android:configChanges="keyboardHidden|orientation"
+            
+            android:screenOrientation="landscape" >
         </activity>
     </application>
 

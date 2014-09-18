@@ -364,7 +364,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         		        TextView textView = new TextView(getApplicationContext());
         		        textView.setBackgroundColor(Color.BLUE);
         		        textView.setTextColor(Color.RED);
-        		        textView.setTextSize(20);
+        		        textView.setTextSize(15);
         		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
         		        textView.setTypeface(typeface);
         		        textView.setPadding(10, 10, 10, 10);
@@ -386,13 +386,13 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
             				String message = "20 sekunder igjen!! "; 
             				
             				
-            			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG);
+            			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT);
             		        toast.setGravity(Gravity.TOP, toast.getXOffset() / 2, toast.getYOffset() / 2);
             		        
             		        TextView textView = new TextView(getApplicationContext());
             		        textView.setBackgroundColor(Color.BLUE);
             		        textView.setTextColor(Color.RED);
-            		        textView.setTextSize(20);
+            		        textView.setTextSize(15);
             		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
             		        textView.setTypeface(typeface);
             		        textView.setPadding(10, 10, 10, 10);
