@@ -20,11 +20,11 @@
 
     <!-- TODO: Replace these by your achievement/leaderboard IDs! -->
   
-  <string name="achievement_prime">CgkIwu3Qp4kGEAIQAQ</string>
+  <string name="achievement_stjerneskudd">CgkIwu3Qp4kGEAIQAQ</string>
   <string name="achievement_entusiast">CgkIwu3Qp4kGEAIQAg</string>
   <string name="achievement_bored">CgkIwu3Qp4kGEAIQAw</string>
-  <string name="achievement_humble">CgkIwu3Qp4kGEAIQBA</string>
-  <string name="achievement_arrogant">CgkIwu3Qp4kGEAIQBQ</string>
+  <string name="achievement_sprer_glede">CgkIwu3Qp4kGEAIQBA</string>
+  <string name="achievement_komet">CgkIwu3Qp4kGEAIQBQ</string>
   <string name="achievement_poengsamleren">CgkIwu3Qp4kGEAIQBg</string>
   <string name="leaderboard_easy">CgkIwu3Qp4kGEAIQBw</string>
   <string name="leaderboard_hard">CgkIwu3Qp4kGEAIQCA</string>

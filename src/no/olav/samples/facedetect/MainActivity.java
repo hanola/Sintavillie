@@ -75,6 +75,7 @@ public class MainActivity extends BaseGameActivity
     // playing on hard mode?
     boolean mHardMode = false;
     boolean mFrenzyMode = false;
+    int timeExpired;
     
     //playing in easy, hard or frenzy
     String mode = "null";
@@ -95,7 +96,7 @@ public class MainActivity extends BaseGameActivity
 			   int mScore2 = extras.getInt("Game_Score");
 			   int mScore = extras.getInt("Tot_Game_Score");
 			   mode = extras.getString("game_mode");
-			   int timeExpired = extras.getInt("time_expired");
+			   timeExpired = extras.getInt("time_expired");
 			   
 			   Log.i("Score" , "Put String MainAct time long  "+datas);
 			   Log.i("Score" , "Put int MainAct score   "+mScore);
@@ -103,7 +104,7 @@ public class MainActivity extends BaseGameActivity
 			   Log.i("Score" , " gameMode MainAct   "+mode);
 			   Log.i("Score" , "time expired   "+timeExpired);
 			   
-			   int requestedScore = 0;
+			   int requestedScore = 1;
 			   if (mode!= null) {
 				   Log.i("Score" , "AfterPut String MainAct time long  "+datas);
 				   Log.i("Score" , "afterPut int MainAct score   "+mScore);
@@ -217,9 +218,9 @@ public class MainActivity extends BaseGameActivity
 
         // Did the developer forget to replace a placeholder ID?
         int res_ids[] = new int[] {
-                R.string.app_id, R.string.achievement_arrogant,
-                R.string.achievement_bored, R.string.achievement_humble,
-                R.string.achievement_entusiast, R.string.achievement_prime,
+                R.string.app_id, R.string.achievement_stjerneskudd,
+                R.string.achievement_bored, R.string.achievement_entusiast,
+                R.string.achievement_entusiast, R.string.achievement_komet,
                 R.string.leaderboard_easy, R.string.leaderboard_hard
         };
         for (int i : res_ids) {
@@ -278,19 +279,19 @@ public class MainActivity extends BaseGameActivity
     void checkForAchievements(int requestedScore, int finalScore) {
         // Check if each condition is met; if so, unlock the corresponding
         // achievement.
-        if (isPrime(finalScore)) {
-            mOutbox.mPrimeAchievement = true;
-            achievementToast(getString(R.string.achievement_prime_toast_text));
+        if (mode.contentEquals("hard") && timeExpired < 60) {
+            mOutbox.mStjerneskuddAchivement = true;
+            achievementToast(getString(R.string.achievement_stjerneskudd_toast_text));
         }
-        if (requestedScore == 9999) {
-            mOutbox.mArrogantAchievement = true;
-            achievementToast(getString(R.string.achievement_arrogant_toast_text));
+        if (mode.contentEquals("frenzy") && finalScore > 300) {
+            mOutbox.mSprerGledeAchivement = true;
+            achievementToast(getString(R.string.achievement_sprerglede_toast_text));
         }
-        if (requestedScore == 0) {
-            mOutbox.mHumbleAchievement = true;
-            achievementToast(getString(R.string.achievement_humble_toast_text));
+        if (mode.contentEquals("easy") && finalScore >= 20) {
+            mOutbox.mKometAchivement = true;
+            achievementToast(getString(R.string.achievement_komet_toast_text));
         }
-        if (finalScore == 15) {
+        if (mode.contentEquals("easy") && finalScore >= 15 ) {
             mOutbox.mPoengsamlerenAchivement = true;
             achievementToast(getString(R.string.achievement_poengsamleren_text));
         }
@@ -322,16 +323,16 @@ public class MainActivity extends BaseGameActivity
             mOutbox.saveLocal(this);
             return;
         }
-        if (mOutbox.mPrimeAchievement) {
-            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_prime));
+        if (mOutbox.mStjerneskuddAchivement) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_stjerneskudd));
             mOutbox.mPrimeAchievement = false;
         }
-        if (mOutbox.mArrogantAchievement) {
-            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_arrogant));
+        if (mOutbox.mSprerGledeAchivement) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_sprer_glede));
             mOutbox.mArrogantAchievement = false;
         }
-        if (mOutbox.mHumbleAchievement) {
-            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_humble));
+        if (mOutbox.mKometAchivement) {
+            Games.Achievements.unlock(getApiClient(), getString(R.string.achievement_komet));
             mOutbox.mHumbleAchievement = false;
         }
         if (mOutbox.mPoengsamlerenAchivement) {
@@ -486,6 +487,10 @@ public class MainActivity extends BaseGameActivity
         boolean mLeetAchievement = false;
         boolean mArrogantAchievement = false;
         boolean mPoengsamlerenAchivement = false;
+        boolean mStjerneskuddAchivement = false;
+        boolean mSprerGledeAchivement = false;
+        boolean mKometAchivement = false;
+        
         
         int mBoredSteps = 0;
         int mEasyModeScore = -1;
@@ -493,8 +498,8 @@ public class MainActivity extends BaseGameActivity
         int mFrenzyScore   = -1;
 
         boolean isEmpty() {
-            return !mPrimeAchievement && !mHumbleAchievement && !mPoengsamlerenAchivement &&
-                    !mArrogantAchievement && mBoredSteps == 0 && mEasyModeScore < 0 &&
+            return !mPrimeAchievement && !mHumbleAchievement & !mStjerneskuddAchivement && !mPoengsamlerenAchivement &&
+                    !mSprerGledeAchivement && !mKometAchivement && !mArrogantAchievement && mBoredSteps == 0 && mEasyModeScore < 0 &&
                     mHardModeScore < 0 && mFrenzyScore <0;
         }
 

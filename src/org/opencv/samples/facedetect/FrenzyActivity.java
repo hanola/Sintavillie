@@ -464,7 +464,7 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
         Point point4 = new Point(20, 400);
         countDown = 5 - (TotGameScore/10);
         countDownTimer = (int) (180 - estimatedTime);
-        Core.putText(mRgba, "Time  " +estimatedTime, point, 2, 3 , EYE_RECT_COLOR);
+        Core.putText(mRgba, "Tid  " +estimatedTime, point, 2, 3 , EYE_RECT_COLOR);
         Core.putText(mRgba, "Poeng  " +gameScore, point2, 2, 2 , EYE_RECT_COLOR);
         //Core.putText(mRgba, "Smil igjen  " +countDown, point3, 2, 1 , EYE_RECT_COLOR);
         Core.putText(mRgba, "Tid igjen  " +countDownTimer, point4, 2, 1 , EYE_RECT_COLOR);

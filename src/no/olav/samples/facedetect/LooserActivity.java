@@ -54,7 +54,7 @@ int intLong;
 		  
 		  
 		  
-      updateUi();
+      //updateUi();
       
 	}
 		

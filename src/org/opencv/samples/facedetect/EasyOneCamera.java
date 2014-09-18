@@ -419,17 +419,17 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
     	
     	
     	//running in new thread to work
-    	if (gameScore == 15){
-    		Log.i("TotScore" , "TotScore i if 15 before  "+TotGameScore);
-    		Log.i("TotScore" , "Score i if 15   "+gameScore);
+    	if (gameScore == 5){
+    		Log.i("TotScore" , "TotScore i if 5 before  "+TotGameScore);
+    		Log.i("TotScore" , "Score i if 5   "+gameScore);
     		TotGameScore = TotGameScore + gameScore;
-    		Log.i("TotScore" , "TotScore i if 15 after   "+TotGameScore);
+    		Log.i("TotScore" , "TotScore i if 5 after   "+TotGameScore);
     		 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
     	       
     	        SharedPreferences.Editor editor = preferences.edit();
     	        editor.putString("Name", "Olav");
-    	        editor.putInt("ScoreSmile", gameScore/15);
-    	        editor.putInt("TotGameScore", TotGameScore/15);
+    	        editor.putInt("ScoreSmile", gameScore/5);
+    	        editor.putInt("TotGameScore", TotGameScore/5);
     	        editor.apply();
     	        
     		runOnUiThread(new Runnable() {
@@ -563,7 +563,7 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
 
          
 
-        alertDialogBuilder.setTitle(this.getTitle()+ " valg.  Dine poeng  " +TotGameScore/15);
+        alertDialogBuilder.setTitle(this.getTitle()+ " valg.  Dine poeng  " +TotGameScore/5);
 
         alertDialogBuilder.setMessage("Vil du samle flere smil?");
 
@@ -574,7 +574,7 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
                public void onClick(DialogInterface dialog,int id) {
 
             	   //TotGameScore = TotGameScore + gameScore;
-            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/15);
+            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/5);
                    // go to a new activity of the app
             	   gameScore = 0;
             	  	dialog.dismiss();
@@ -627,7 +627,7 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
             	   Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
             	   hovedmeny.putExtra("EXTRA_ID", Score);
            		hovedmeny.putExtra("Game_Score", gameScore);
-           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/15);
+           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/5);
            		hovedmeny.putExtra("game_mode", mode);
                    startActivity(hovedmeny);
                   

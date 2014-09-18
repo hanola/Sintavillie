@@ -21,7 +21,7 @@
     android:layout_height="match_parent"
     android:id="@+id/screen_loose"
     android:gravity="center"
-    android:background="#ffdaa1"
+    android:background="#5fb242"
     >
 
     <LinearLayout android:orientation="vertical"
@@ -38,55 +38,34 @@
             android:textColor="#FF0000"
             android:textSize="30sp"/>
         
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Poeng:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:textSize="30sp"
-            android:id="@+id/score_display"/>
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tid brukt:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:id="@+id/scoreblurb" 
-            android:textSize="30sp"/>
+        <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/angry" />
 
        <Button
-            android:id="@+id/win_ok_button"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_weight="0.12"
-            android:drawableLeft="@drawable/leaderboard"
-            android:onClick="ToMain"
-            android:text="@string/ok_looser"
-            android:textColor="#00FF00"
-            android:textSize="30sp" />
+           android:id="@+id/win_ok_button"
+           android:layout_width="170dp"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:drawableLeft="@drawable/leaderboard"
+           android:onClick="ToMain"
+           android:text="@string/ok_looser"
+           android:textColor="#00FF00"
+           android:textSize="30sp" />
         
          <Button
-            android:id="@+id/button"
-            android:layout_width="212dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_weight="0.12"
-            android:drawableLeft="@drawable/hard"
-            android:onClick="TryAgain"
-            android:text="@string/again"
-            android:textColor="#FF0000"
-            android:textSize="30sp" />
+             android:id="@+id/button"
+             android:layout_width="212dp"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="20dp"
+             android:drawableLeft="@drawable/hard"
+             android:onClick="TryAgain"
+             android:text="@string/again"
+             android:textColor="#FF0000"
+             android:textSize="30sp" />
+
     </LinearLayout>
 
    

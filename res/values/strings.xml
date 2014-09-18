@@ -10,11 +10,11 @@
     <string name="leaderboards_not_available">Vennligst logg inn for å se poengoversikt.</string>
     <string name="easy_mode_explanation">You\'re playing in easy mode, so you got the score you requested! Wasn\'t that easy?</string>
     <string name="hard_mode_explanation">You\'re playing in hard mode, so you only got half the score you requested! Isn\'t this game hard?</string>
-    <string name="achievement_prime_toast_text">Prime score!</string>
-    <string name="achievement_arrogant_toast_text">Arrogant (requested maximum score)!</string>
-    <string name="achievement_humble_toast_text">Fordi requested score er satt til 0</string>
+    <string name="achievement_stjerneskudd_toast_text">Du klarte vanskelig under 1 min</string>
+    <string name="achievement_sprerglede_toast_text">Mer enn 300 i super!!</string>
+    <string name="achievement_komet_toast_text">Mer enn 20 i lett modus</string>
     <string name="achievement_leet_toast_text">Poengsamler! Du fikk 150 poeng</string>
-    <string name="achievement_poengsamleren_text">Poengsamler! Du fikk 150 poeng</string>
+    <string name="achievement_poengsamleren_text">Poengsamler! Du fikk 15 poeng eller mer</string>
     <string name="achievement">Prestasjon</string>
     <string name="your_progress_will_be_uploaded">Dine eksisterende prestasjoner og poeng vil bli lastet opp hvert øyeblikk.</string>
     <string name="what_score_do_you_deserve">What score do you think you deserve?</string>
