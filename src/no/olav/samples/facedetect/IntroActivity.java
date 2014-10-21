@@ -2,6 +2,10 @@ package no.olav.samples.facedetect;
 
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class IntroActivity extends Activity {
-
+	private CommentsDataSource datasource;
 	
 	ImageButton nextbutton;
 	ImageButton startbutton;
@@ -27,6 +31,9 @@ public class IntroActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
+		
+		datasource = new CommentsDataSource(this);
+	    datasource.open();
 		
 		addButtonListener();
 	}
@@ -44,13 +51,19 @@ public class IntroActivity extends Activity {
 	}
 	
 	public void addButtonListener(){
-		
+		 
 		infoImage = (ImageView)findViewById(R.id.imageView1);
 		
 		nextbutton = (ImageButton)findViewById(R.id.next);
 		nextbutton.setOnClickListener(new View.OnClickListener(){
 			
 			public void onClick(View v){
+				Comment comment3 = null;
+				 String event = "Intro next button";
+			      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+				comment3 = datasource.createComment(event + timeStamp);
+				Log.i("TotScore" , "Time for pressing button next   "+timeStamp);
+				
 				SnapShot sn = new SnapShot(v);
 				Bitmap b = sn.snap();
 				Log.d("Snap", "result: "+b);
@@ -84,4 +97,15 @@ public class IntroActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	 @Override
+	  protected void onResume() {
+	    datasource.open();
+	    super.onResume();
+	  }
+
+	  @Override
+	  protected void onPause() {
+	    datasource.close();
+	    super.onPause();
+	  }
 }

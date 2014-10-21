@@ -64,7 +64,7 @@ public class MainActivity extends BaseGameActivity
     MainMenuFragment mMainMenuFragment;
     GameplayFragment mGameplayFragment;
     WinFragment mWinFragment;
-
+    private CommentsDataSource datasource;
     // request codes we use when invoking an external activity
     final int RC_RESOLVE = 5000, RC_UNUSED = 5001;
 
