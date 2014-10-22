@@ -1,5 +1,8 @@
 package no.olav.samples.facedetect;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,10 +26,10 @@ public class WinnerActivity extends BaseGameActivity implements OnClickListener{
     private static final int REQUEST_CODE = 10;
     static CountDownTimer myTimer =null;    
     private Button mainBtn;
-int totScore = 1;
-String WinMode;
-int intLong;
-    
+    int totScore = 1;
+    String WinMode;
+    int intLong;
+    private CommentsDataSource datasource;
     
  // request codes we use when invoking an external activity
     final int RC_RESOLVE = 5000, RC_UNUSED = 5001;
@@ -47,6 +50,9 @@ int intLong;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_winner);
+		
+		datasource = new CommentsDataSource(this);
+	    datasource.open();
 		
 		Bundle extras = getIntent().getExtras();
 		  if (extras != null) {
@@ -106,6 +112,13 @@ int intLong;
 	}
 	
 	 public void ToMain(View view) {
+		 
+		 Comment comment2 = null;
+  		 String event2 = "Win activity Save and exit pressed  ";
+  	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+  		comment2 = datasource.createComment(event2 + timeStamp2);
+  		Log.i("TotScore" , "Win activity Save and exit pressed   "+timeStamp2);
+		 
 		 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.MainActivity.class);
 		 l1.putExtra("Game_Score", mScore);
 		 l1.putExtra("EXTRA_ID", datas);
@@ -121,6 +134,12 @@ int intLong;
 	 }
 	 
 	 public void TryAgain(View view) {
+		 
+		 Comment comment2 = null;
+  		 String event2 = "Win activity try again pressed  ";
+  	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+  		comment2 = datasource.createComment(event2 + timeStamp2);
+  		Log.i("TotScore" , "Win activity try again pressed   "+timeStamp2);
 		
 	//	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
 	  //	  startActivity(l1);
@@ -155,6 +174,18 @@ int intLong;
 		// TODO Auto-generated method stub
 		
 	}
+	
+	 @Override
+	  protected void onResume() {
+	    datasource.open();
+	    super.onResume();
+	  }
+
+	  @Override
+	  protected void onPause() {
+	    datasource.close();
+	    super.onPause();
+	  }
 	 
 }
 

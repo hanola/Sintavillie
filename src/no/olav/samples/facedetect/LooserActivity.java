@@ -19,15 +19,18 @@ public class LooserActivity extends Activity {
     private static final int REQUEST_CODE = 10;
     static CountDownTimer myTimer =null;    
     private Button mainBtn;
-int totScore = 1;
-String WinMode;
-int intLong;
-
+    int totScore = 1;
+    String WinMode;
+    int intLong;
+    private CommentsDataSource datasource;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_looser);
+		
+		datasource = new CommentsDataSource(this);
+	    datasource.open();
 		
 		Bundle extras = getIntent().getExtras();
 		  if (extras != null) {
@@ -113,5 +116,17 @@ int intLong;
 		 
 	 
 	 }
+	 
+	 @Override
+	  protected void onResume() {
+	    datasource.open();
+	    super.onResume();
+	  }
+
+	  @Override
+	  protected void onPause() {
+	    datasource.close();
+	    super.onPause();
+	  }
 	 
 }

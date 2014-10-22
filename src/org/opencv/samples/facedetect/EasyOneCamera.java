@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import no.olav.samples.facedetect.Comment;
+import no.olav.samples.facedetect.CommentsDataSource;
 import no.olav.samples.facedetect.R;
 import no.olav.samples.facedetect.WinFragment;
 import no.olav.samples.facedetect.MainActivity;
@@ -81,6 +84,7 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
     private int                    TotGameScore           =0;
     private Button 							learnbutton;
     String mode                                        = "easy";
+    private CommentsDataSource     datasource;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -231,6 +235,9 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
 
         setContentView(R.layout.face_detect_surface_view);
 
+        datasource = new CommentsDataSource(this);
+	    datasource.open();
+        
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setCvCameraViewListener(this);
         //learnbutton = new Button(getApplicationContext());
@@ -256,6 +263,7 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
     @Override
     public void onPause()
     {
+    	datasource.close();
         super.onPause();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
@@ -264,6 +272,7 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
     @Override
     public void onResume()
     {
+    	datasource.open();
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
     }
@@ -420,6 +429,8 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
     	
     	//running in new thread to work
     	if (gameScore == 5){
+    		
+    		
     		Log.i("TotScore" , "TotScore i if 5 before  "+TotGameScore);
     		Log.i("TotScore" , "Score i if 5   "+gameScore);
     		TotGameScore = TotGameScore + gameScore;
@@ -431,6 +442,12 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
     	        editor.putInt("ScoreSmile", gameScore/5);
     	        editor.putInt("TotGameScore", TotGameScore/5);
     	        editor.apply();
+    	        
+    	        Comment comment3 = null;
+   			 String event = "Time catching face in easy mode";
+   		      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+   			comment3 = datasource.createComment(event + timeStamp + TotGameScore/5);
+   			Log.i("TotScore" , "Time catching face in easy mode   "+timeStamp);
     	        
     		runOnUiThread(new Runnable() {
 
@@ -572,7 +589,13 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
         alertDialogBuilder.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
 
                public void onClick(DialogInterface dialog,int id) {
-
+            	   Comment comment3 = null;
+            	   String event = "Time pressing YES in easy mode";
+        		      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+        			comment3 = datasource.createComment(event + timeStamp);
+        			Log.i("TotScore" , "Time pressing YES in easy mode   "+timeStamp);
+        			
+        			
             	   //TotGameScore = TotGameScore + gameScore;
             	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/5);
                    // go to a new activity of the app
@@ -617,6 +640,13 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
         alertDialogBuilder.setNeutralButton("Nei",new DialogInterface.OnClickListener() {
 
                public void onClick(DialogInterface dialog,int id) {
+            	   
+            	   Comment comment3 = null;
+            	   String event = "Time pressing NO in easy mode";
+        		      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+        			comment3 = datasource.createComment(event + timeStamp);
+        			Log.i("TotScore" , "Time pressing NO in easy mode   "+timeStamp);
+            	   
             	   String Score = Integer.toString(gameScore);
             	   gameScore = 0;
             	 
@@ -647,6 +677,12 @@ public class EasyOneCamera extends FragmentActivity implements CvCameraViewListe
     
     private void openAlertStart() {
 		 
+    	 Comment comment3 = null;
+  	   String event = "Time First alert box in easy mode";
+		      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+			comment3 = datasource.createComment(event + timeStamp);
+			Log.i("TotScore" , "Time First alert box in easy mode   "+timeStamp);
+    	
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EasyOneCamera.this);
         alertDialogBuilder.setTitle(this.getTitle()+ " valg");
         alertDialogBuilder.setMessage("Se om du kan finne noen smilende fjes rundt deg...");

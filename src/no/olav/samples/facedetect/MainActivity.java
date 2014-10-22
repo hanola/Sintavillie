@@ -16,6 +16,8 @@
 
 package no.olav.samples.facedetect;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
@@ -89,6 +91,9 @@ public class MainActivity extends BaseGameActivity
         enableDebugLog(ENABLE_DEBUG, TAG);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //initialize database for saving events and timestamp
+        datasource = new CommentsDataSource(this);
+	    datasource.open();
         
         Bundle extras = getIntent().getExtras();
 		  if (extras != null) {
@@ -165,6 +170,11 @@ public class MainActivity extends BaseGameActivity
 
     @Override
     public void onShowAchievementsRequested() {
+    	Comment comment3 = null;
+		 String event = "Pressing Achivement button:";
+	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		comment3 = datasource.createComment(event + timeStamp);
+		Log.i("TotScore" , "Pressing Achivement button:   "+timeStamp);
         if (isSignedIn()) {
             startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()),
                     RC_UNUSED);
@@ -175,6 +185,11 @@ public class MainActivity extends BaseGameActivity
 
     @Override
     public void onShowLeaderboardsRequested() {
+    	Comment comment3 = null;
+		 String event = "Pressing Leaderboard button:";
+	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		comment3 = datasource.createComment(event + timeStamp);
+		Log.i("TotScore" , "Pressing Leaderboard button:   "+timeStamp);
         if (isSignedIn()) {
             startActivityForResult(Games.Leaderboards.getAllLeaderboardsIntent(getApiClient()),
                     RC_UNUSED);
@@ -190,6 +205,11 @@ public class MainActivity extends BaseGameActivity
      * @param hardMode whether to start gameplay in "hard mode".
      */
     void startGame(boolean hardMode) {
+    	Comment comment3 = null;
+		 String event = "Pressing hardmode button:";
+	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		comment3 = datasource.createComment(event + timeStamp);
+		Log.i("TotScore" , "Pressing hardmode button:   "+timeStamp);
         mHardMode = hardMode;
         Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
   	  startActivity(l1);
@@ -522,19 +542,38 @@ public class MainActivity extends BaseGameActivity
     }
     
     public void startFaceDetection(){
+    	Comment comment3 = null;
+		 String event = "Pressing easy mode button:";
+	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		comment3 = datasource.createComment(event + timeStamp);
+		Log.i("TotScore" , "Pressing easy mode button:   "+timeStamp);
     	Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
     	  startActivity(l1);
    }
     
     public void startTimeDetection(){
+    	Comment comment3 = null;
+		 String event = "Pressing hard mode button:";
+	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		comment3 = datasource.createComment(event + timeStamp);
+		Log.i("TotScore" , "Pressing hard mode button:   "+timeStamp);
       	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
        	  startActivity(l1);
       }
     
     public void startTutorial(){
-    	
-     	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FrenzyActivity.class);
-      	  startActivity(l1);
+    	Comment comment3 = null;
+		 String event = "Pressing Super mode button:";
+	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		comment3 = datasource.createComment(event + timeStamp);
+		Log.i("TotScore" , "Pressing Super mode button:   "+timeStamp);
+     	
+		Intent intentLevels = new Intent(this, no.olav.samples.facedetect.GetDb.class);
+				startActivity(intentLevels);
+		
+		//Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FrenzyActivity.class);
+      	  //startActivity(l1);
+				
       	 // no.olav.samples.facedetect.LooserActivity
      }
     

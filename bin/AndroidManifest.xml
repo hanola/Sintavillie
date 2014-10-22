@@ -43,7 +43,7 @@
         <activity
             android:name="no.olav.samples.facedetect.WinnerActivity"
             android:label="@string/title_activity_winner"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="no.olav.samples.facedetect.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -59,10 +59,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="no.olav.samples.facedetect.EasyOneCamera"
-            android:label="@string/title_activity_easy_one_camera" >
-        </activity>
+        
         <activity
             android:name="no.olav.samples.facedetect.LooserActivity"
             android:label="@string/title_activity_looser"
@@ -70,10 +67,13 @@
         </activity>
         <activity
             android:name="org.opencv.samples.facedetect.FrenzyActivity"
-            android:label="@string/title_activity_frenzy" 
-             android:configChanges="keyboardHidden|orientation"
-            
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_frenzy"
             android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="no.olav.samples.facedetect.GetDb"
+            android:label="@string/title_activity_get_db" >
         </activity>
     </application>
 

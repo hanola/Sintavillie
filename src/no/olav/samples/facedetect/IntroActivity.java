@@ -46,6 +46,15 @@ public class IntroActivity extends Activity {
 	}
 	
 	protected void chooseLevel(View view){
+		Comment comment3 = null;
+		 String event = "Pressing play in intro:";
+	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		comment3 = datasource.createComment(event + timeStamp);
+		Log.i("TotScore" , "Pressing play in intro:   "+timeStamp);
+		
+		//Intent intentLevels = new Intent(this, no.olav.samples.facedetect.GetDb.class);
+		//startActivity(intentLevels);
+		
 		Intent intentLevels = new Intent(this, no.olav.samples.facedetect.MainActivity.class);
 		startActivity(intentLevels);
 	}

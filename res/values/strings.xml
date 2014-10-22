@@ -63,5 +63,7 @@
     <string name="ok_looser">Exit</string>
     <string name="again">Prøv igjen</string>
     <string name="title_activity_frenzy">FrenzyActivity</string>
+    <string name="title_activity_get_db">GetDb</string>
+     <string name="hello">Hello!</string>
 
 </resources>
