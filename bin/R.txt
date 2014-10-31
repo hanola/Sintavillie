@@ -143,14 +143,14 @@ int id digit_button_8 0x7f080030
 int id digit_button_9 0x7f080031
 int id digit_button_clear 0x7f080039
 int id easyCamera_view 0x7f080017
-int id easy_mode_button 0x7f08003d
+int id easy_mode_button 0x7f08003c
 int id fd_activity_surface_view 0x7f080018
 int id fragment_container 0x7f080027
 int id front 0x7f080016
 int id getDatabase 0x7f08001c
 int id grayscale 0x7f080012
 int id group 0x7f080019
-int id hard_mode_button 0x7f08003e
+int id hard_mode_button 0x7f08003d
 int id hello 0x7f08003b
 int id holo_dark 0x7f080005
 int id holo_light 0x7f080006
@@ -185,7 +185,7 @@ int id strict_sandbox 0x7f080009
 int id terrain 0x7f080003
 int id textView1 0x7f080029
 int id textView2 0x7f08002b
-int id tutorial 0x7f08003c
+int id tutorial 0x7f08003e
 int id win_ok_button 0x7f080025
 int id win_screen_sign_in_bar 0x7f080045
 int id win_screen_sign_in_button 0x7f080046

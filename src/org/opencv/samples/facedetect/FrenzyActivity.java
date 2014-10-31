@@ -618,6 +618,12 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
     	
     	Log.i("TotScore" , "estimated time on smile  "+estimatedTime);
     	
+    	Comment comment2 = null;
+ 		 String event2 = "Collected face super mode  ";
+ 	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+ 		comment2 = datasource.createComment(event2 + timeStamp2 + gameScore);
+ 		Log.i("TotScore" , "Collected face super mode   "+timeStamp2 + gameScore);
+    	
     	if (gameScore == 1){
     		startTime = System.currentTimeMillis();
         	Log.i("timeScore" , "StartTime    "+startTime);

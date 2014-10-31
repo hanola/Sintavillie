@@ -17,17 +17,33 @@
 package no.olav.samples.facedetect;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 import org.opencv.samples.facedetect.FdActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.PendingResult;
@@ -78,6 +94,18 @@ public class MainActivity extends BaseGameActivity
     boolean mHardMode = false;
     boolean mFrenzyMode = false;
     int timeExpired;
+    
+    //testing Restfull database
+    String firstName = "OlavErBest";
+	String lastName = "BrennaHansen";
+	String age = "43";
+	String points = "4";
+	
+    private MenuItem               viewDb;
+    private MenuItem               transfearDb;
+    private MenuItem               mItemFace30;
+    private MenuItem               mItemFace20;
+    private MenuItem               mItemType;
     
     //playing in easy, hard or frenzy
     String mode = "null";
@@ -568,15 +596,21 @@ public class MainActivity extends BaseGameActivity
 		comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing Super mode button:   "+timeStamp);
      	
-		Intent intentLevels = new Intent(this, no.olav.samples.facedetect.GetDb.class);
-				startActivity(intentLevels);
 		
-		//Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FrenzyActivity.class);
-      	  //startActivity(l1);
+		
+		Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FrenzyActivity.class);
+      	  startActivity(l1);
 				
-      	 // no.olav.samples.facedetect.LooserActivity
+      	 
      }
     
+    public void startDb()  {
+    	
+    	Intent intentLevels = new Intent(this, no.olav.samples.facedetect.GetDb.class);
+		startActivity(intentLevels);
+    }
+    	
+    	
     public void loadAchievements()  {
     	   GameHelper mHelper = null;        // GameHelper should be accessible for this to work
 
@@ -612,5 +646,33 @@ public class MainActivity extends BaseGameActivity
     	   buf.close();
     	   r.release();*/
     	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i(TAG, "called onCreateOptionsMenu");
+        viewDb = menu.add("View DB");
+        transfearDb = menu.add("Tranfear DB");
+       /* mItemFace40 = menu.add("Face size 40%");
+        mItemFace30 = menu.add("Face size 30%");
+        mItemFace20 = menu.add("Face size 20%");
+        */
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
+        if (item == viewDb)
+        	startDb();
+            
+        else if (item == transfearDb)
+            startDb();
+       /* else if (item == mItemFace30)
+            setMinFaceSize(0.3f);
+        else if (item == mItemFace20)
+            setMinFaceSize(0.2f);
+        }*/
+        return true;
+    }
+    
     
 }

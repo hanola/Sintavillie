@@ -1,5 +1,8 @@
 package no.olav.samples.facedetect;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -81,6 +84,13 @@ public class LooserActivity extends Activity {
 	
 	
 	 public void ToMain(View view) {
+		 
+		 Comment comment2 = null;
+  		 String event2 = "Loose activity EXIT pressed  ";
+  	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+  		comment2 = datasource.createComment(event2 + timeStamp2);
+  		Log.i("TotScore" , "Loose activity EXIT pressed   "+timeStamp2);
+		 
 		 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.MainActivity.class);
 		 l1.putExtra("Game_Score", mScore);
 		 l1.putExtra("EXTRA_ID", datas);
@@ -93,6 +103,13 @@ public class LooserActivity extends Activity {
 	 }
 	 
 	 public void TryAgain(View view) {
+		 
+		 Comment comment2 = null;
+  		 String event2 = "Loose activity TRY AGAIN pressed  ";
+  	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+  		comment2 = datasource.createComment(event2 + timeStamp2);
+  		Log.i("TotScore" , "Loose activity TRY AGAIN pressed   "+timeStamp2);
+		 
 //		 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
 		  //	  startActivity(l1);
 			 if (WinMode.contentEquals("easy")){

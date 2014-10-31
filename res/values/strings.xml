@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+   
     <string name="app_name">Sintavillie</string>
     <string name="signing_in">Logger på med Google</string>
     <string name="signing_out">Logger ut</string>
