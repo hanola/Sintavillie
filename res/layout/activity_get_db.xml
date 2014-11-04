@@ -12,22 +12,17 @@
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add New" 
+            android:text="Add to server" 
             android:onClick="onClick"/>
 
         <Button
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete First" 
+            android:text="Delete All" 
             android:onClick="onClick"/>
         
-        <Button
-            android:id="@+id/getDatabase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View Database" 
-            android:onClick="onClick"/>
+        
         
     </LinearLayout>
 

@@ -12,11 +12,24 @@ import no.olav.samples.facedetect.Comment;
 import no.olav.samples.facedetect.CommentsDataSource;
 import no.olav.samples.facedetect.R;
 import no.olav.samples.facedetect.WinFragment;
-import no.olav.samples.facedetect.MainActivity;
 import no.olav.samples.facedetect.WinnerActivity;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
@@ -26,30 +39,21 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.objdetect.CascadeClassifier;
 
-import com.google.example.games.basegameutils.BaseGameActivity;
-
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -328,6 +332,13 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
     		Comment comment3 = null;
 			 String event = "Time of 30 sek toast in SUPER mode  ";
 		      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+		      
+		      String age="0";
+   		      String points="0";
+   	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FrenzyActivity.this, event, timeStamp, String.valueOf(estimatedTime), String.valueOf(gameScore));
+   				mDoSetPOST.execute("");
+		      
+		      
 			comment3 = datasource.createComment(event + timeStamp);
 			Log.i("TotScore" , "Time of 30 sek toast in SUPER mode   "+timeStamp);
     		
@@ -364,6 +375,12 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
     			Comment comment3 = null;
    			 String event = "Time of 120 sek toast in SUPER mode  ";
    		      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+   		      
+   		   String age="0";
+		      String points="0";
+	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FrenzyActivity.this, event, timeStamp, String.valueOf(estimatedTime), String.valueOf(gameScore));
+				mDoSetPOST.execute("");
+   		      
    			comment3 = datasource.createComment(event + timeStamp);
    			Log.i("TotScore" , "Time of 120 sek toast in SUPER mode   "+timeStamp);
         		
@@ -401,6 +418,12 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
         			Comment comment3 = null;
        			 String event = "Time of 150 sek toast in SUPER mode  ";
        		      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+       		      
+       		   String age="0";
+    		      String points="0";
+    	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FrenzyActivity.this, event, timeStamp, String.valueOf(estimatedTime), String.valueOf(gameScore));
+    				mDoSetPOST.execute("");
+       		      
        			comment3 = datasource.createComment(event + timeStamp);
        			Log.i("TotScore" , "Time of 150 sek toast in SUPER mode   "+timeStamp);
             		
@@ -435,6 +458,12 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
         		    	Comment comment3 = null;
         				 String event = "Time of 180 sek in SUPER mode WIN ";
         			      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+        			      
+        			      String age="0";
+        	   		      String points="0";
+        	   	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FrenzyActivity.this, event, timeStamp, String.valueOf(estimatedTime), String.valueOf(gameScore));
+        	   				mDoSetPOST.execute("");
+        			      
         				comment3 = datasource.createComment(event + timeStamp + gameScore);
         				Log.i("TotScore" , "Time of 180 sek in SUPER mode WIN  "+timeStamp + gameScore);
                  	   
@@ -621,7 +650,13 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
     	Comment comment2 = null;
  		 String event2 = "Collected face super mode  ";
  	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
- 		comment2 = datasource.createComment(event2 + timeStamp2 + gameScore);
+ 	     /*  
+ 	     String age="0";
+		      String points="0";
+	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FrenzyActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(gameScore));
+				mDoSetPOST.execute("");
+ 	      
+ 		comment2 = datasource.createComment(event2 + timeStamp2 + gameScore);*/
  		Log.i("TotScore" , "Collected face super mode   "+timeStamp2 + gameScore);
     	
     	if (gameScore == 1){
@@ -1037,6 +1072,12 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
     	Comment comment2 = null;
  		 String event2 = "Start Dialig box SUPER mode  ";
  	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+ 	      
+ 	     String age="0";
+	      String points="0";
+  		   DoSetPOST mDoSetPOST = new DoSetPOST(FrenzyActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(gameScore));
+			mDoSetPOST.execute("");
+ 	      
  		comment2 = datasource.createComment(event2 + timeStamp2);
  		Log.i("TotScore" , "Start Dialig box SUPER mode   "+timeStamp2);
 		 
@@ -1059,6 +1100,74 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
    }
+    
+    public class DoSetPOST extends AsyncTask<String, Void, Boolean>{
+
+		Context mContext = null;
+		String strFirstName = "";
+		String strLastName = "";
+		String strAge = "";
+		String strPoints = "";
+		
+		Exception exception = null;
+		
+		DoSetPOST(Context context, String firstName, String lastName, String age, String points){
+			mContext = context;
+			strFirstName = firstName;
+			strLastName = lastName;
+			strAge = age;
+			strPoints = points;			
+		}
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			try{
+
+				//Setup the parameters
+				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				//for search 
+				//nameValuePairs.add(new BasicNameValuePair("FirstNameToSearch", strNameToSearch));
+				nameValuePairs.add(new BasicNameValuePair("firstname", strFirstName));
+				nameValuePairs.add(new BasicNameValuePair("lastname", strLastName));
+				nameValuePairs.add(new BasicNameValuePair("age", strAge));
+				nameValuePairs.add(new BasicNameValuePair("points", strPoints));
+				//Add more parameters as necessary
+
+				//Create the HTTP request
+				HttpParams httpParameters = new BasicHttpParams();
+
+				//Setup timeouts
+				HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+				HttpConnectionParams.setSoTimeout(httpParameters, 15000);			
+
+				HttpClient httpclient = new DefaultHttpClient(httpParameters);
+				HttpPost httppost = new HttpPost("http://www.vasetskiheiser.no/clientservertest/insert.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));        
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+
+				final String result = EntityUtils.toString(entity);
+				
+				//new thread for toast
+			    FrenzyActivity.this.runOnUiThread(new Runnable() {
+				    public void run() {
+				    	Toast.makeText(getBaseContext(), result,
+								Toast.LENGTH_SHORT).show();
+				    }
+				});
+				
+			
+	            
+				
+			}catch (Exception e){
+				Log.e("ClientServerDemo", "Error:", e);
+				exception = e;
+			}
+
+			return true;
+		}
+    }
     
 }
 

@@ -1,11 +1,28 @@
 package no.olav.samples.facedetect;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+
+import no.olav.samples.facedetect.WinnerActivity.DoSetPOST;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -13,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LooserActivity extends Activity {
 	String mExplanation = "Testing ";
@@ -107,12 +125,18 @@ public class LooserActivity extends Activity {
 		 Comment comment2 = null;
   		 String event2 = "Loose activity TRY AGAIN pressed  ";
   	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+  	      
+  	    String age="0";
+	      String points="0";
+		   DoSetPOST mDoSetPOST = new DoSetPOST(LooserActivity.this, event2, timeStamp2, age, points);
+			mDoSetPOST.execute("");
+  	      
   		comment2 = datasource.createComment(event2 + timeStamp2);
   		Log.i("TotScore" , "Loose activity TRY AGAIN pressed   "+timeStamp2);
 		 
-//		 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
-		  //	  startActivity(l1);
-			 if (WinMode.contentEquals("easy")){
+		 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
+		  	  startActivity(l1);
+			/* if (WinMode.contentEquals("easy")){
 				 Intent l2 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
 		  	  startActivity(l2);
 			 }
@@ -125,7 +149,7 @@ public class LooserActivity extends Activity {
 			 if (WinMode.contentEquals("frenzy")){
 				 Intent l4 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
 		  	  startActivity(l4);
-			 }
+			 }*/
 			 
 			 
 			 
@@ -145,5 +169,73 @@ public class LooserActivity extends Activity {
 	    datasource.close();
 	    super.onPause();
 	  }
+	  
+	  public class DoSetPOST extends AsyncTask<String, Void, Boolean>{
+
+			Context mContext = null;
+			String strFirstName = "";
+			String strLastName = "";
+			String strAge = "";
+			String strPoints = "";
+			
+			Exception exception = null;
+			
+			DoSetPOST(Context context, String firstName, String lastName, String age, String points){
+				mContext = context;
+				strFirstName = firstName;
+				strLastName = lastName;
+				strAge = age;
+				strPoints = points;			
+			}
+
+			@Override
+			protected Boolean doInBackground(String... arg0) {
+
+				try{
+
+					//Setup the parameters
+					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					//for search 
+					//nameValuePairs.add(new BasicNameValuePair("FirstNameToSearch", strNameToSearch));
+					nameValuePairs.add(new BasicNameValuePair("firstname", strFirstName));
+					nameValuePairs.add(new BasicNameValuePair("lastname", strLastName));
+					nameValuePairs.add(new BasicNameValuePair("age", strAge));
+					nameValuePairs.add(new BasicNameValuePair("points", strPoints));
+					//Add more parameters as necessary
+
+					//Create the HTTP request
+					HttpParams httpParameters = new BasicHttpParams();
+
+					//Setup timeouts
+					HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+					HttpConnectionParams.setSoTimeout(httpParameters, 15000);			
+
+					HttpClient httpclient = new DefaultHttpClient(httpParameters);
+					HttpPost httppost = new HttpPost("http://www.vasetskiheiser.no/clientservertest/insert.php");
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));        
+					HttpResponse response = httpclient.execute(httppost);
+					HttpEntity entity = response.getEntity();
+
+					final String result = EntityUtils.toString(entity);
+					
+					//new thread for toast
+				    LooserActivity.this.runOnUiThread(new Runnable() {
+					    public void run() {
+					    	Toast.makeText(getBaseContext(), result,
+									Toast.LENGTH_SHORT).show();
+					    }
+					});
+					
+				
+		            
+					
+				}catch (Exception e){
+					Log.e("ClientServerDemo", "Error:", e);
+					exception = e;
+				}
+
+				return true;
+			}
+	    }
 	 
 }

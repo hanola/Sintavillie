@@ -22,6 +22,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
+import no.olav.samples.facedetect.IntroActivity.DoSetPOST;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -201,6 +203,13 @@ public class MainActivity extends BaseGameActivity
     	Comment comment3 = null;
 		 String event = "Pressing Achivement button:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+	      
+	      //insert do web server
+	      String age = "0";
+	      String points = "0";
+	      DoSetPOST mDoSetPOST = new DoSetPOST(MainActivity.this, event, timeStamp, age, points);
+			mDoSetPOST.execute("");
+	      
 		comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing Achivement button:   "+timeStamp);
         if (isSignedIn()) {
@@ -216,6 +225,12 @@ public class MainActivity extends BaseGameActivity
     	Comment comment3 = null;
 		 String event = "Pressing Leaderboard button:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+	      
+	      String age = "0";
+	      String points = "0";
+	      DoSetPOST mDoSetPOST = new DoSetPOST(MainActivity.this, event, timeStamp, age, points);
+			mDoSetPOST.execute("");
+	      
 		comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing Leaderboard button:   "+timeStamp);
         if (isSignedIn()) {
@@ -236,6 +251,12 @@ public class MainActivity extends BaseGameActivity
     	Comment comment3 = null;
 		 String event = "Pressing hardmode button:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+	      
+	      String age = "0";
+	      String points = "0";
+	      DoSetPOST mDoSetPOST = new DoSetPOST(MainActivity.this, event, timeStamp, age, points);
+			mDoSetPOST.execute("");
+	      
 		comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing hardmode button:   "+timeStamp);
         mHardMode = hardMode;
@@ -573,6 +594,12 @@ public class MainActivity extends BaseGameActivity
     	Comment comment3 = null;
 		 String event = "Pressing easy mode button:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+	      
+	      String age = "0";
+	      String points = "0";
+	      DoSetPOST mDoSetPOST = new DoSetPOST(MainActivity.this, event, timeStamp, age, points);
+			mDoSetPOST.execute("");
+	      
 		comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing easy mode button:   "+timeStamp);
     	Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
@@ -583,6 +610,12 @@ public class MainActivity extends BaseGameActivity
     	Comment comment3 = null;
 		 String event = "Pressing hard mode button:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+	      
+	      String age = "0";
+	      String points = "0";
+	      DoSetPOST mDoSetPOST = new DoSetPOST(MainActivity.this, event, timeStamp, age, points);
+			mDoSetPOST.execute("");
+	      
 		comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing hard mode button:   "+timeStamp);
       	 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
@@ -593,6 +626,12 @@ public class MainActivity extends BaseGameActivity
     	Comment comment3 = null;
 		 String event = "Pressing Super mode button:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+	      
+	      String age = "0";
+	      String points = "0";
+	      DoSetPOST mDoSetPOST = new DoSetPOST(MainActivity.this, event, timeStamp, age, points);
+			mDoSetPOST.execute("");
+	      
 		comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing Super mode button:   "+timeStamp);
      	
@@ -674,5 +713,71 @@ public class MainActivity extends BaseGameActivity
         return true;
     }
     
-    
+    public class DoSetPOST extends AsyncTask<String, Void, Boolean>{
+
+		Context mContext = null;
+		String strFirstName = "";
+		String strLastName = "";
+		String strAge = "";
+		String strPoints = "";
+		
+		Exception exception = null;
+		
+		DoSetPOST(Context context, String firstName, String lastName, String age, String points){
+			mContext = context;
+			strFirstName = firstName;
+			strLastName = lastName;
+			strAge = age;
+			strPoints = points;			
+		}
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			try{
+
+				//Setup the parameters
+				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				//for search 
+				//nameValuePairs.add(new BasicNameValuePair("FirstNameToSearch", strNameToSearch));
+				nameValuePairs.add(new BasicNameValuePair("firstname", strFirstName));
+				nameValuePairs.add(new BasicNameValuePair("lastname", strLastName));
+				nameValuePairs.add(new BasicNameValuePair("age", strAge));
+				nameValuePairs.add(new BasicNameValuePair("points", strPoints));
+				//Add more parameters as necessary
+
+				//Create the HTTP request
+				HttpParams httpParameters = new BasicHttpParams();
+
+				//Setup timeouts
+				HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+				HttpConnectionParams.setSoTimeout(httpParameters, 15000);			
+
+				HttpClient httpclient = new DefaultHttpClient(httpParameters);
+				HttpPost httppost = new HttpPost("http://www.vasetskiheiser.no/clientservertest/insert.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));        
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+
+				final String result = EntityUtils.toString(entity);
+				
+				//new thread for toast
+			    MainActivity.this.runOnUiThread(new Runnable() {
+				    public void run() {
+				    	Toast.makeText(getBaseContext(), result,
+								Toast.LENGTH_SHORT).show();
+				    }
+				});
+				
+			
+	            
+				
+			}catch (Exception e){
+				Log.e("ClientServerDemo", "Error:", e);
+				exception = e;
+			}
+
+			return true;
+		}
+    }
 }

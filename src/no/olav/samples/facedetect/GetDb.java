@@ -61,10 +61,14 @@ public class GetDb extends ListActivity {
 	        switch (view.getId()) {
 	        
 	case R.id.delete:
-    if (getListAdapter().getCount() > 0) {
+		//delete all
+		
+		
+    while (getListAdapter().getCount() > 0) {
       comment = (Comment) getListAdapter().getItem(0);
       datasource.deleteComment(comment);
       adapter.remove(comment);
+      
     }
     break;
     
@@ -72,14 +76,14 @@ public class GetDb extends ListActivity {
 		String[] getArrayComments = new String[3000];
     	getArrayComments = datasource.getAllCommentsArray();
     	
-    	int i = 0;
+    	int j = 0;
     	
     	
     	for(String s : getArrayComments){
     	//Log.i("test", "String get commentArray mainTest  " +getArrayComments[i]);
     	DoSetPOST mDoSetPOST = new DoSetPOST(GetDb.this, s, lastName, age, points);
 		mDoSetPOST.execute("");
-		i++;
+		j++;
     	}
   }
   adapter.notifyDataSetChanged();

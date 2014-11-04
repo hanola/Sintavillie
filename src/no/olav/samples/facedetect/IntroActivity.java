@@ -3,20 +3,35 @@ package no.olav.samples.facedetect;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class IntroActivity extends Activity {
 	private CommentsDataSource datasource;
@@ -49,7 +64,15 @@ public class IntroActivity extends Activity {
 		Comment comment3 = null;
 		 String event = "Pressing play in intro:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
-		comment3 = datasource.createComment(event + timeStamp);
+		
+	      //insert do web server
+	      String age = "0";
+	      String points = "0";
+	      DoSetPOST mDoSetPOST = new DoSetPOST(IntroActivity.this, event, timeStamp, age, points);
+			mDoSetPOST.execute("");
+	      
+	      
+	      comment3 = datasource.createComment(event + timeStamp);
 		Log.i("TotScore" , "Pressing play in intro:   "+timeStamp);
 		
 		//Intent intentLevels = new Intent(this, no.olav.samples.facedetect.GetDb.class);
@@ -70,6 +93,14 @@ public class IntroActivity extends Activity {
 				Comment comment3 = null;
 				 String event = "Intro next button";
 			      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
+			      String age = "0";
+			      String points = "0";
+
+			      
+			      
+			      DoSetPOST mDoSetPOST = new DoSetPOST(IntroActivity.this, event, timeStamp, age, points);
+					mDoSetPOST.execute("");
+			     // into Sqlite database
 				comment3 = datasource.createComment(event + timeStamp);
 				Log.i("TotScore" , "Time for pressing button next   "+timeStamp);
 				
@@ -87,9 +118,12 @@ public class IntroActivity extends Activity {
 		
 		startbutton = (ImageButton)findViewById(R.id.startGame);
 		startbutton.setVisibility(View.INVISIBLE);	
+		
+		//startbutton
 		startbutton.setOnClickListener(new View.OnClickListener(){
 			
 			public void onClick(View v){
+				
 				chooseLevel(v);
 			}
 		});
@@ -116,5 +150,74 @@ public class IntroActivity extends Activity {
 	  protected void onPause() {
 	    datasource.close();
 	    super.onPause();
+	  }
+	  
+	  public class DoSetPOST extends AsyncTask<String, Void, Boolean>{
+
+			Context mContext = null;
+			String strFirstName = "";
+			String strLastName = "";
+			String strAge = "";
+			String strPoints = "";
+			
+			Exception exception = null;
+			
+			DoSetPOST(Context context, String firstName, String lastName, String age, String points){
+				mContext = context;
+				strFirstName = firstName;
+				strLastName = lastName;
+				strAge = age;
+				strPoints = points;			
+			}
+
+			@Override
+			protected Boolean doInBackground(String... arg0) {
+
+				try{
+
+					//Setup the parameters
+					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					//for search 
+					//nameValuePairs.add(new BasicNameValuePair("FirstNameToSearch", strNameToSearch));
+					nameValuePairs.add(new BasicNameValuePair("firstname", strFirstName));
+					nameValuePairs.add(new BasicNameValuePair("lastname", strLastName));
+					nameValuePairs.add(new BasicNameValuePair("age", strAge));
+					nameValuePairs.add(new BasicNameValuePair("points", strPoints));
+					//Add more parameters as necessary
+
+					//Create the HTTP request
+					HttpParams httpParameters = new BasicHttpParams();
+
+					//Setup timeouts
+					HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+					HttpConnectionParams.setSoTimeout(httpParameters, 15000);			
+
+					HttpClient httpclient = new DefaultHttpClient(httpParameters);
+					HttpPost httppost = new HttpPost("http://www.vasetskiheiser.no/clientservertest/insert.php");
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));        
+					HttpResponse response = httpclient.execute(httppost);
+					HttpEntity entity = response.getEntity();
+
+					final String result = EntityUtils.toString(entity);
+					
+					//new thread for toast
+					IntroActivity.this.runOnUiThread(new Runnable() {
+					    public void run() {
+					    	Toast.makeText(getBaseContext(), result,
+									Toast.LENGTH_SHORT).show();
+					    }
+					});
+					
+				
+		            
+					
+				}catch (Exception e){
+					Log.e("ClientServerDemo", "Error:", e);
+					exception = e;
+				}
+
+				return true;
+			}
+			
 	  }
 }
