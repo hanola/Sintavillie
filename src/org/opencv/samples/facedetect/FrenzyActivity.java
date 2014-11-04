@@ -435,8 +435,8 @@ public class FrenzyActivity extends FragmentActivity implements CvCameraViewList
         		    	Comment comment3 = null;
         				 String event = "Time of 180 sek in SUPER mode WIN ";
         			      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
-        				comment3 = datasource.createComment(event + timeStamp + TotGameScore/10);
-        				Log.i("TotScore" , "Time of 180 sek in SUPER mode WIN  "+timeStamp + TotGameScore/10);
+        				comment3 = datasource.createComment(event + timeStamp + gameScore);
+        				Log.i("TotScore" , "Time of 180 sek in SUPER mode WIN  "+timeStamp + gameScore);
                  	   
                  	   Intent winAct = new Intent(getApplicationContext(),
 

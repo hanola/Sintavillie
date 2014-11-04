@@ -463,7 +463,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
                  		  Comment comment2 = null;
              			 String event2 = "Collected 5 faces hard mode WIN  ";
              		      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
-             			comment2 = datasource.createComment(event2 + timeStamp2);
+             			comment2 = datasource.createComment(event2 + timeStamp2 + estimatedTime);
              			Log.i("TotScore" , "Collected 5 faces hard mode WIN  "+timeStamp2);
                  	   
                  	   Intent winAct = new Intent(getApplicationContext(),

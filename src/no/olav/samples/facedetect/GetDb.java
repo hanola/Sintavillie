@@ -69,7 +69,7 @@ public class GetDb extends ListActivity {
     break;
     
 	case R.id.add:
-		String[] getArrayComments = new String[2000];
+		String[] getArrayComments = new String[3000];
     	getArrayComments = datasource.getAllCommentsArray();
     	
     	int i = 0;
@@ -134,7 +134,7 @@ public class GetDb extends ListActivity {
 				HttpConnectionParams.setSoTimeout(httpParameters, 15000);			
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
-				HttpPost httppost = new HttpPost("http://192.168.38.102/~Olav/clientservertest/insert.php");
+				HttpPost httppost = new HttpPost("http://www.vasetskiheiser.no/clientservertest/insert.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));        
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();

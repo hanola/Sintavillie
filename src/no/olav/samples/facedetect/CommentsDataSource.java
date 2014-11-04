@@ -52,7 +52,7 @@ public class CommentsDataSource {
   }
   
   public String[] getAllCommentsArray() {
-	  String[] commentArray = new String[2000];
+	  String[] commentArray = new String[3000];
       
 	  Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
 	        allColumns, null, null, null, null, null);
