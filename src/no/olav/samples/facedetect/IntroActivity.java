@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,11 +38,11 @@ public class IntroActivity extends Activity {
 	private CommentsDataSource datasource;
 	
 	ImageButton nextbutton;
-	ImageButton startbutton;
+	Button startbutton;
 	ImageView infoImage;
 	int i = 0; 
 	
-	int infoImages[] = {R.drawable.sintavillie, R.drawable.inverted, R.drawable.end, R.drawable.w6};
+	int infoImages[] = {R.drawable.sintavillie, R.drawable.inverted, R.drawable.end, R.drawable.tutorial1, R.drawable.tutorial2};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,8 +96,6 @@ public class IntroActivity extends Activity {
 			      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
 			      String age = "0";
 			      String points = "0";
-
-			      
 			      
 			      DoSetPOST mDoSetPOST = new DoSetPOST(IntroActivity.this, event, timeStamp, age, points);
 					mDoSetPOST.execute("");
@@ -108,7 +107,7 @@ public class IntroActivity extends Activity {
 				Bitmap b = sn.snap();
 				Log.d("Snap", "result: "+b);
 				infoImage.setImageResource(infoImages[i++]);
-				if (i==3){
+				if (i==5){
 					i=0;
 					nextbutton.setVisibility(View.INVISIBLE);
 					startbutton.setVisibility(View.VISIBLE);	
@@ -116,7 +115,7 @@ public class IntroActivity extends Activity {
 			}
 		});
 		
-		startbutton = (ImageButton)findViewById(R.id.startGame);
+		startbutton = (Button)findViewById(R.id.startGame);
 		startbutton.setVisibility(View.INVISIBLE);	
 		
 		//startbutton
