@@ -62,8 +62,7 @@ public class IntroActivity extends Activity {
 	}
 	
 	protected void chooseLevel(View view){
-		Comment comment3 = null;
-		 String event = "Pressing play in intro:";
+		String event = "Pressing play in intro:";
 	      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
 		
 	      //insert do web server
@@ -73,8 +72,7 @@ public class IntroActivity extends Activity {
 			mDoSetPOST.execute("");
 	      
 	      
-	      comment3 = datasource.createComment(event + timeStamp);
-		Log.i("TotScore" , "Pressing play in intro:   "+timeStamp);
+	      Log.i("TotScore" , "Pressing play in intro:   "+timeStamp);
 		
 		//Intent intentLevels = new Intent(this, no.olav.samples.facedetect.GetDb.class);
 		//startActivity(intentLevels);
@@ -91,17 +89,14 @@ public class IntroActivity extends Activity {
 		nextbutton.setOnClickListener(new View.OnClickListener(){
 			
 			public void onClick(View v){
-				Comment comment3 = null;
-				 String event = "Intro next button";
+				String event = "Intro next button";
 			      String timeStamp = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
 			      String age = "0";
 			      String points = "0";
 			      
 			      DoSetPOST mDoSetPOST = new DoSetPOST(IntroActivity.this, event, timeStamp, age, points);
 					mDoSetPOST.execute("");
-			     // into Sqlite database
-				comment3 = datasource.createComment(event + timeStamp);
-				Log.i("TotScore" , "Time for pressing button next   "+timeStamp);
+			     Log.i("TotScore" , "Time for pressing button next   "+timeStamp);
 				
 				SnapShot sn = new SnapShot(v);
 				Bitmap b = sn.snap();

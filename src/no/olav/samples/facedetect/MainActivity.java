@@ -656,44 +656,14 @@ public class MainActivity extends BaseGameActivity
     	   boolean fullLoad = false;  // set to 'true' to reload all achievements (ignoring cache)
     	   long waitTime = 60;    // seconds to wait for achievements to load before timing out
 
-    	   // load achievements
-    	   /*  PendingResult p = Games.Achievements.load( mHelper.getApiClient(), fullLoad );
-    	   Achievements.LoadAchievementsResult r = (Achievements.LoadAchievementsResult)p.await( waitTime, TimeUnit.SECONDS );
-    	   int status = r.getStatus().getStatusCode();
-    	   if ( status != GamesStatusCodes.STATUS_OK )  {
-    	      r.release();
-    	      Toast.makeText(getApplicationContext(), "failed to load", Toast.LENGTH_LONG).show();
-    	      return;           // Error Occurred
-    	   }
-
-    	   // process the loaded achievements
-    	   AchievementBuffer buf = r.getAchievements();
-    	   int bufSize = buf.getCount();
-    	   for ( int i = 0; i < bufSize; i++ )  {
-    	      Achievement ach = buf.get( i );
-
-    	      // here you now have access to the achievement's data
-    	      String id = ach.getAchievementId();  // the achievement ID string
-    	      boolean unlocked = ach.getState() == Achievement.STATE_UNLOCKED;  // is unlocked
-    	      
-    	      Log.i("Score" , "unlocked   "+unlocked);
-    	      boolean incremental = ach.getType() == Achievement.TYPE_INCREMENTAL;  // is incremental
-    	      if ( incremental ){
-    	         int steps = ach.getCurrentSteps();  // current incremental steps
-    	      	}
-    	      }
-    	   buf.close();
-    	   r.release();*/
+    	
     	}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i(TAG, "called onCreateOptionsMenu");
         viewDb = menu.add("View DB");
         transfearDb = menu.add("Tranfear DB");
-       /* mItemFace40 = menu.add("Face size 40%");
-        mItemFace30 = menu.add("Face size 30%");
-        mItemFace20 = menu.add("Face size 20%");
-        */
+      
         return true;
     }
     
@@ -705,11 +675,7 @@ public class MainActivity extends BaseGameActivity
             
         else if (item == transfearDb)
             startDb();
-       /* else if (item == mItemFace30)
-            setMinFaceSize(0.3f);
-        else if (item == mItemFace20)
-            setMinFaceSize(0.2f);
-        }*/
+      
         return true;
     }
     

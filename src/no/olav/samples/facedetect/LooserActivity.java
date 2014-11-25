@@ -103,10 +103,7 @@ public class LooserActivity extends Activity {
 	
 	 public void ToMain(View view) {
 		 
-		 Comment comment2 = null;
-  		 String event2 = "Loose activity EXIT pressed  ";
-  	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
-  		comment2 = datasource.createComment(event2 + timeStamp2);
+		 String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
   		Log.i("TotScore" , "Loose activity EXIT pressed   "+timeStamp2);
 		 
 		 Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.MainActivity.class);
@@ -122,8 +119,7 @@ public class LooserActivity extends Activity {
 	 
 	 public void TryAgain(View view) {
 		 
-		 Comment comment2 = null;
-  		 String event2 = "Loose activity TRY AGAIN pressed  ";
+		 String event2 = "Loose activity TRY AGAIN pressed  ";
   	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
   	      
   	    String age="0";
@@ -131,31 +127,11 @@ public class LooserActivity extends Activity {
 		   DoSetPOST mDoSetPOST = new DoSetPOST(LooserActivity.this, event2, timeStamp2, age, points);
 			mDoSetPOST.execute("");
   	      
-  		comment2 = datasource.createComment(event2 + timeStamp2);
   		Log.i("TotScore" , "Loose activity TRY AGAIN pressed   "+timeStamp2);
 		 
 		 Intent l1 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
 		  	  startActivity(l1);
-			/* if (WinMode.contentEquals("easy")){
-				 Intent l2 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.EasyOneCamera.class);
-		  	  startActivity(l2);
-			 }
-			 
-			 if (WinMode.contentEquals("hard")){
-				 Intent l3 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
-		  	  startActivity(l3);
-			 }
-			 
-			 if (WinMode.contentEquals("frenzy")){
-				 Intent l4 = new Intent(getApplicationContext(), org.opencv.samples.facedetect.FdActivity.class);
-		  	  startActivity(l4);
-			 }*/
-			 
-			 
-			 
-		 
-		 
-	 
+			
 	 }
 	 
 	 @Override

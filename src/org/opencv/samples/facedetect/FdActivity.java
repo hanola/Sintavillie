@@ -61,6 +61,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class FdActivity extends FragmentActivity implements CvCameraViewListener2 {
 
     private static final String    TAG                 = "OCVSample::Activity";
@@ -115,21 +116,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
                     System.loadLibrary("detection_based_tracker");
 
                     try {
-                        // load cascade file from application resources
-                       /* InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
-                        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-                        mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
-                        FileOutputStream os = new FileOutputStream(mCascadeFile);
-
-                        byte[] buffer = new byte[4096];
-                        int bytesRead;
-                        while ((bytesRead = is.read(buffer)) != -1) {
-                            os.write(buffer, 0, bytesRead);
-                        }
-                        is.close();
-                        os.close();
-*/
-                     // ------------------------------------------------------------------------------------------------------
+                       
                         
                     	InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
                         File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
@@ -257,19 +244,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setCvCameraViewListener(this);
-        //learnbutton = new Button(getApplicationContext());
-        //ArrayList<View> views = new ArrayList<View>();
-        //views.add(findViewById(R.id.digit_button_0));
-        //learnbutton=(Button)findViewById(R.id.digit_button_0); 
-        /*mOpenCvCameraView.addTouchables(views);
-        mOpenCvCameraView.enableFpsMeter();
-        final Button button = (Button) findViewById(R.id.digit_button_0);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-            }
-        });*/
-        
+       
        
     }
 
@@ -318,7 +293,6 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	
     	
     	
-    	//long estimatedTime = System.currentTimeMillis() - FstartTime;
     	long timeMouth = System.currentTimeMillis();
     	estimatedTime = (timeMouth - FstartTime)/1000;
   
@@ -346,7 +320,6 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     		runOnUiThread(new Runnable() {
     			
     			public void run() {
-    				//Toast.makeText(getApplicationContext(), "NŒ er vi igang!", Toast.LENGTH_LONG).show();
 
     				String message = "Det har gŒtt "; 
     				String message2 = " sekunder siden start! ";
@@ -567,26 +540,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         Core.putText(mRgba, "Smil igjen  " +countDown, point3, 2, 1 , EYE_RECT_COLOR);
         Core.putText(mRgba, "Tid igjen  " +countDownTimer, point4, 2, 1 , EYE_RECT_COLOR);
         
-        /*Point x5=new Point();
-        //using opencv tutorials for circle, its working fine now.
-        
-        
-        	x1.x=mRgba.;
-        	x1.y=facesArray[0].y + eyesArray[i].y + eyesArray[i].height*0.5;
-        	int Radius=(int)((eyesArray[i].width + eyesArray[i].height)*0.25 );
-        	Core.circle(mRgba, x1, Radius, EYE_RECT_COLOR);
-        	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
-        	
-        	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3);
-        	//x1.x=eyesArray[i].tl().x + facesArray[0].width;
-        	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
-        	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
-        }
-        */
-        
-        
-        
-        
+       
         
         
         Rect[] facesArray = faces.toArray();
@@ -596,55 +550,15 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
         if(facesArray.length>0)
         {
         	
-        	//Rect roi = new Rect((int)facesArray[0].tl().x,(int)facesArray[0].tl().y,facesArray[0].width,facesArray[0].height);
-        	//Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y+facesArray[0].height/5),facesArray[0].width,(int)(facesArray[0].height/3));//imran
         	
-        	
-        	//making roi from face image
-        	Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y),facesArray[0].width,(int)(facesArray[0].height));//imran
-        	 //inserts the rectangle ROI for mouth 
-        	
+        	Rect roi = new Rect((int)facesArray[0].tl().x,(int)(facesArray[0].tl().y),facesArray[0].width,(int)(facesArray[0].height));
         	//testing smaller ROI
             Rect mouth2 = new Rect(facesArray[0].x + facesArray[0].width/12, (int)(facesArray[0].y+(facesArray[0].height/1.6)),facesArray[0].width - 2*facesArray[0].width/12,(int)(facesArray[0].height/3));
-            //Core.rectangle(mRgba, mouth2.tl(), mouth2.br(), new Scalar(255,0, 150, 150), 2);
-            //--------------------------------------------
             
-        	//taking inputs from nustrat opencv example
-        	//imran check above, using tl of x and tl of y.other wise it will give runtime errors
         	Mat cropped = new Mat();
-        	//cropped = mGray.submat(facesArray[0]);//imran yuppie!, this did the trick!...everything else was failing
-        	//refer to opencv 2.4 tut pdf
-        	//cropped = mGray.submat(roi);
+        	
         	cropped = mGray.submat(mouth2);
-        	//cropped.copyTo(mGray.submat(roi));
         	
-       /* 	
-        	if (mEyeDetector != null)
-        	mEyeDetector.detectMultiScale(cropped, eyes, 1.1,2,2,new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-        	else
-        	Log.i("Fdvuew","mEyeDetector is NULL");
-        	
-        Rect[] eyesArray;
-        eyesArray = eyes.toArray();
-        Log.i("Fdvuew","Eyes Count"+eyesArray.length);
-        Point x1=new Point();
-        //using opencv tutorials for circle, its working fine now.
-        
-        for (int i = 0; i < eyesArray.length; i++)
-        {
-           
-        	x1.x=facesArray[0].x + eyesArray[i].x + eyesArray[i].width*0.5;
-        	x1.y=facesArray[0].y + eyesArray[i].y + eyesArray[i].height*0.5;
-        	int Radius=(int)((eyesArray[i].width + eyesArray[i].height)*0.25 );
-        	Core.circle(mRgba, x1, Radius, EYE_RECT_COLOR);
-        	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
-        	
-        	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3);
-        	//x1.x=eyesArray[i].tl().x + facesArray[0].width;
-        	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
-        	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
-        }
-        */
         	
         	
     	if (mSmileDetector != null)
@@ -669,14 +583,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	x2.x=facesArray[0].x + mouthArray[j].x + mouthArray[j].width*0.5;
     	x2.y=facesArray[0].y + mouthArray[j].y + mouthArray[j].height*0.5;
     	int Radius=(int)((mouthArray[j].width + mouthArray[j].height)*0.25 );
-    	//Core.circle(mRgba, x2, Radius, EYE_RECT_COLOR);
-    	//Core.putText(mRgba, "Smiling", x2, 2, 4 , EYE_RECT_COLOR);
-    	//x1.y=faces[i].y + eyes[j].y + eyes[j].height*0.5;
     	
-    	// Core.rectangle(mRgba,eyesArray[i].tl(), eyesArray[i].br(), EYE_RECT_COLOR, 3); TODO: check i or j variable in for 
-    	//x1.x=eyesArray[i].tl().x + facesArray[0].width;
-    	//x1.y=eyesArray[i].tl().y + facesArray[0].width;
-    	//Core.rectangle(mRgba,x1, eyesArray[i].br(), EYE_RECT_COLOR, 3);
     	
     	gameScore = gameScore+1;
     	String Score = Integer.toString(gameScore);
@@ -692,32 +599,7 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     	}
     	
     	
-    	//running in new thread to work
-    	/*if (gameScore == 20){
-    		runOnUiThread(new Runnable() {
-
-    			public void run() {
-    				//Toast.makeText(getApplicationContext(), "NŒ er vi igang!", Toast.LENGTH_LONG).show();
-
-    				String message = "Hei pŒ deg:)"; 
-    			  
-    			  Toast toast = Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG);
-    		        toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
-
-    		        TextView textView = new TextView(getApplicationContext());
-    		        textView.setBackgroundColor(Color.DKGRAY);
-    		        textView.setTextColor(Color.WHITE);
-    		        textView.setTextSize(30);
-    		        Typeface typeface = Typeface.create("serif", Typeface.BOLD);
-    		        textView.setTypeface(typeface);
-    		        textView.setPadding(10, 10, 10, 10);
-    		        textView.setText(message);
-
-    		        toast.setView(textView);
-    		        toast.show();
-    			   }
-    			});
-    	}*/
+    	
     	
     	if (gameScore == 10){
     		
@@ -761,61 +643,12 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     			   }
     			});
     			
+    			}
+    	
     	}
-    	
-    	
-    	
-    	
-    	
-    	/*//running in new thread to work
-    	if (gameScore == 50){
-    		stopTime = System.currentTimeMillis();
-        	Log.i("timeScore" , "StopTime    "+stopTime);
-        	long sumTime = stopTime - startTime;
-        	long secTime = sumTime /1000 % 60;
-        	Log.i("timeScore" , "Time used    "+sumTime);
-        	Log.i("timeScore" , "Time used sec    "+secTime);
-        
-			
-        	
-    		runOnUiThread(new Runnable() {
-
-    			public void run() {
-    				
-    				
-    			  Toast.makeText(getApplicationContext(), "50 smil begynner Œ ligne pŒ noe!!!", Toast.LENGTH_LONG).show();
-
-    			   }
-    			});
-    	}
-    	
-    	if (gameScore == 100){
-    		
-    		runOnUiThread(new Runnable() {
-
-    			public void run() {
-
-    			  Toast.makeText(getApplicationContext(), "Bare 50 smil til:)", Toast.LENGTH_LONG).show();
-
-    			   }
-    			});
-    	}
-    	
-    	if (gameScore == 150 ){
-    		//WinnerFragment      =new WinFragment();
-    		//getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, WinnerFragment ).commit();
-    		 
-    		Log.i("Score" , "Put intent FdActivity");
-    		
-    		Intent l1 = new Intent(getApplicationContext(), no.olav.samples.facedetect.WinnerActivity.class);
-    		l1.putExtra("EXTRA_ID", Score);
-    		l1.putExtra("Game_Score", gameScore);
-    	  	  startActivity(l1);
-    	}*/
-    }
         
         
-        }
+   }
             
        
        
@@ -876,17 +709,13 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     }
     private void openAlert() {
     	
-    	Comment comment2 = null;
-		 String event2 = "Dialig box collected smile hard mode OK  ";
+    	String event2 = "Dialig box collected smile hard mode OK  ";
 	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
 	      
-	      String age="0";
-		      String points="0";
-	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FdActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(TotGameScore/10));
+	      DoSetPOST mDoSetPOST = new DoSetPOST(FdActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(TotGameScore/10));
 				mDoSetPOST.execute("");
 	      
 	      
-		comment2 = datasource.createComment(event2 + timeStamp2 + TotGameScore/10);
 		Log.i("TotScore" , "Dialig box collected smile hard mode OK  "+timeStamp2 + TotGameScore/10);
 		 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
@@ -910,55 +739,25 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
             	  	dialog.dismiss();
             	   
             	   
-            	  /* Intent hovedmeny = new Intent(getApplicationContext(),
-
-                           no.olav.samples.facedetect.MainActivity.class);
-
-                   
-            	   FdActivity.this.recreate();
-*/
+            	 
                }
 
              });
 
-        // set negative button: No message
-
-       /* alertDialogBuilder.setNegativeButton("Nei",new DialogInterface.OnClickListener() {
-
-               public void onClick(DialogInterface dialog,int id) {
-
-                   // cancel the alert box and put a Toast to the user
-
-                   //dialog.cancel();
-            	   
-
-            	   Intent winner = new Intent(getApplicationContext(),
-
-                           no.olav.samples.facedetect.WinnerActivity.class);
-
-                   startActivity(winner);
-
-               }
-
-           });*/
-
+      
         // set neutral button: Exit the app message
 
         alertDialogBuilder.setNeutralButton("Exit",new DialogInterface.OnClickListener() {
 
                public void onClick(DialogInterface dialog,int id) {
             	   
-            	   Comment comment2 = null;
-          		 String event2 = "Dialig box collected smile hard mode EXIT  ";
+            	   String event2 = "Dialig box collected smile hard mode EXIT  ";
           	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
           	      
-          	    String age="0";
-     		      String points="0";
-     	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FdActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(TotGameScore/10));
+          	    DoSetPOST mDoSetPOST = new DoSetPOST(FdActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(TotGameScore/10));
      				mDoSetPOST.execute("");
   		      
           	      
-          		comment2 = datasource.createComment(event2 + timeStamp2 + TotGameScore/10);
           		Log.i("TotScore" , "Dialig box collected smile hard mode EXIT   "+timeStamp2 + TotGameScore/10);
             	   
             	   String Score = Integer.toString(gameScore);
@@ -991,163 +790,15 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
 
    }
 
-    private void openAlertDone() {
-    	
-    	
-		 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
-
-         
-
-        alertDialogBuilder.setTitle(this.getTitle()+ "    Dine poeng  " +TotGameScore/10);
-
-        alertDialogBuilder.setMessage("Gladere og gladere...");
-
-        // set positive button: Yes message
-
-        alertDialogBuilder.setPositiveButton("Pr¿v igjen? ",new DialogInterface.OnClickListener() {
-
-               public void onClick(DialogInterface dialog,int id) {
-
-            	   //TotGameScore = TotGameScore + gameScore;
-            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/10);
-                   // go to a new activity of the app
-            	   estimatedTime = 0;
-            	   gameScore = 0;
-            	   TotGameScore = 0;
-            	  	dialog.dismiss();
-            	   
-            	  	FdActivity.this.recreate();
-            	  /* Intent hovedmeny = new Intent(getApplicationContext(),
-
-                           no.olav.samples.facedetect.MainActivity.class);
-
-                   */
-            	   
-
-               }
-
-             });
-
-       
-        alertDialogBuilder.setNeutralButton("Exit og lagre ny score",new DialogInterface.OnClickListener() {
-
-               public void onClick(DialogInterface dialog,int id) {
-            	   String Score = Integer.toString(gameScore);
-            	   gameScore = 0;
-            	 
-                   // exit the app and go to the HOME
-            	   Intent hovedmeny = new Intent(getApplicationContext(),
-
-                           no.olav.samples.facedetect.MainActivity.class);
-            	   Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
-            	   Log.i("TotScore" , "estimated time    "+estimatedTime);
-            	   TotGameScore = 0;
-            	   
-            	   hovedmeny.putExtra("EXTRA_ID", Score);
-           		hovedmeny.putExtra("Game_Score", gameScore);
-           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/10);
-           		hovedmeny.putExtra("game_mode", mode);
-                   startActivity(hovedmeny);
-                  
-                   
-                   
-
-               }
-
-           });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        alertDialog.show();
-
-   }
-    private void GameOver() {
-    	
-    	
-		 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
-
-         
-
-        alertDialogBuilder.setTitle("Game Over");
-
-        alertDialogBuilder.setMessage("Pr¿v igjen...");
-        
-        // set positive button: Yes message
-
-        alertDialogBuilder.setPositiveButton("Pr¿v igjen? ",new DialogInterface.OnClickListener() {
-
-               public void onClick(DialogInterface dialog,int id) {
-
-            	   //TotGameScore = TotGameScore + gameScore;
-            	   Log.i("TotScore", "TotalGAmeScore in ja button   " +TotGameScore/10);
-                   // go to a new activity of the app
-            	   TotGameScore = 0;
-            	   gameScore = 0;
-            	   estimatedTime = 0;
-            	  	dialog.dismiss();
-            	   
-            	  	//FdActivity.this.recreate();
-            	   Intent hovedmeny = new Intent(getApplicationContext(),
-
-                          org.opencv.samples.facedetect.FdActivity.class);
-
-            	   startActivity(hovedmeny);
-            	   
-
-               }
-
-             });
-
-       
-        alertDialogBuilder.setNeutralButton("Exit",new DialogInterface.OnClickListener() {
-
-               public void onClick(DialogInterface dialog,int id) {
-            	   gameScore = 0;
-            	   String Score = Integer.toString(gameScore);
-            	   gameScore = 0;
-            	   TotGameScore = 0;
-                   // exit the app and go to the HOME
-            	   Intent hovedmeny = new Intent(getApplicationContext(),
-
-                           no.olav.samples.facedetect.MainActivity.class);
-            	   Log.i("TotScore" , "TotScore in nei button    "+TotGameScore);
-            	   Log.i("TotScore" , "estimated time    "+estimatedTime);
-            	   TotGameScore = 0;
-            	   
-            	   hovedmeny.putExtra("EXTRA_ID", Score);
-           		hovedmeny.putExtra("Game_Score", gameScore);
-           		hovedmeny.putExtra("Tot_Game_Score", TotGameScore/10);
-           		hovedmeny.putExtra("game_mode", mode);
-                   startActivity(hovedmeny);
-                  
-                   
-                   
-
-               }
-
-           });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        alertDialog.show();
-
-   }
-    
     private void openAlertStart() {
     	
-    	 Comment comment2 = null;
-  		 String event2 = "Start Dialig box hard mode  ";
+    	 String event2 = "Start Dialig box hard mode  ";
   	      String timeStamp2 = new SimpleDateFormat("ddMM_yyyy_HHmm_ss").format(Calendar.getInstance().getTime());
   	      
-  	    String age="0";
-		      String points="0";
-	   		   DoSetPOST mDoSetPOST = new DoSetPOST(FdActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(TotGameScore/10));
+  	    DoSetPOST mDoSetPOST = new DoSetPOST(FdActivity.this, event2, timeStamp2, String.valueOf(estimatedTime), String.valueOf(TotGameScore/10));
 				mDoSetPOST.execute("");
 	      
   	      
-  		comment2 = datasource.createComment(event2 + timeStamp2);
   		Log.i("TotScore" , "Start Dialig box hard mode   "+timeStamp2);
 		 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FdActivity.this);
@@ -1240,25 +891,3 @@ public class FdActivity extends FragmentActivity implements CvCameraViewListener
     
 }
 
-/*
-//Smile Detector classifier load TODO:make ROI so the detector is more efficient
-if (mDetectorType == JAVA_DETECTOR) {
-    if (mSmileDetector!= null)
-    	mSmileDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-    
-    //inserted from fdview ----------------------------------------------------------
-    
-    Rect[] facesArray = faces.toArray();
-    for (int i = 0; i < facesArray.length; i++){
-     	Rect r = facesArray[i];
-         Core.rectangle(mGray, r.tl(), r.br(), new Scalar(0, 255, 0, 255), 3);
-         Core.rectangle(mRgba, r.tl(), r.br(), new Scalar(0, 255, 0, 255), 3);
-    
-    //inserts the rectangle ROI for mouth 
-    mouth = new Rect(r.x + r.width/12, (int)(r.y+(r.height/1.6)),r.width - 2*r.width/12,(int)(r.height/3));
-    Core.rectangle(mRgba, mouth.tl(), mouth.br(), new Scalar(255,0, 150, 150), 2);
-    //--------------------------------------------
-
-
-*/
